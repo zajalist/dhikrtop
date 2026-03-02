@@ -19,6 +19,9 @@
   border-right: 1px solid var(--border-accent);
   background: linear-gradient(180deg, rgba(26, 26, 26, 0.98) 0%, rgba(20, 20, 20, 0.95) 100%);
   padding: 18px 0 12px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .sidebarLogo {
@@ -68,6 +71,7 @@
   color: var(--text-secondary);
   transition: all var(--transition);
   border-left: 2px solid transparent;
+  box-sizing: border-box;
 }
 
 .navBtn:hover {
