@@ -67,3 +67,19 @@ button {
   clip: rect(0, 0, 0, 0);
   overflow: hidden;
 }
+
+/* Remove default focus outlines that can cause yellow highlights */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Remove any default selection highlight */
+::selection {
+  background: rgba(207, 149, 85, 0.3);
+  color: inherit;
+}

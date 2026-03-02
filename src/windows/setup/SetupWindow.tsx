@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { invoke } from '@tauri-apps/api/core';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 import './SetupWindow.css';
 
 interface SetupFormData {
@@ -40,17 +41,24 @@ export default function SetupWindow() {
   const handleComplete = async () => {
     setIsLoading(true);
     try {
-      await invoke('save_preferences', formData as unknown as Record<string, unknown>);
+      await invoke('save_preferences', { preferences: formData });
       await invoke('mark_setup_complete');
-      window.close();
+      await getCurrentWindow().close();
     } catch (error) {
       console.error('Failed to save preferences:', error);
       setIsLoading(false);
     }
   };
 
+  const handleClose = async () => {
+    await getCurrentWindow().close();
+  };
+
   return (
     <div className="setup-container">
+      <button className="close-btn" onClick={handleClose} title="Close">
+        ✕
+      </button>
       <div className="setup-header">
         <h1>Welcome to Dhikrtop</h1>
         <p>Islamic Remembrances Reminder</p>
