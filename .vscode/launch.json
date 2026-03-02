@@ -6,7 +6,8 @@
       "type": "node-terminal",
       "request": "launch",
       "command": "npm run app:dev",
-      "cwd": "${workspaceFolder}"
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Kill Dev Servers"
     }
   ]
 }

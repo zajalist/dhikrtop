@@ -2,14 +2,24 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Kill Dev Servers",
+      "type": "shell",
+      "command": "lsof -ti:1420 | xargs kill -9 2>/dev/null || pkill -f 'vite|tauri dev' || true",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+    {
       "label": "Tauri: Dev (Windows)",
       "type": "shell",
-      "command": "cargo",
-      "args": ["tauri", "dev"],
+      "command": "npm",
+      "args": ["run", "app:dev"],
       "options": {
-        "cwd": "${workspaceFolder}/src-tauri"
+        "cwd": "${workspaceFolder}"
       },
       "isBackground": true,
+      "dependsOn": ["Kill Dev Servers"],
       "problemMatcher": {
         "pattern": {
           "regexp": "^.*$",
@@ -43,10 +53,10 @@
     {
       "label": "Tauri: Build (Windows Release)",
       "type": "shell",
-      "command": "cargo",
-      "args": ["tauri", "build"],
+      "command": "npm",
+      "args": ["run", "app:build"],
       "options": {
-        "cwd": "${workspaceFolder}/src-tauri"
+        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": ["$rustc"],
       "group": {
@@ -69,10 +79,10 @@
     {
       "label": "Tauri: Build (Windows MSI + NSIS)",
       "type": "shell",
-      "command": "cargo",
-      "args": ["tauri", "build", "--bundles", "msi,nsis"],
+      "command": "npm",
+      "args": ["run", "tauri", "build", "--", "--bundles", "msi,nsis"],
       "options": {
-        "cwd": "${workspaceFolder}/src-tauri"
+        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": ["$rustc"],
       "group": {
