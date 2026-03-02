@@ -1,27 +1,25 @@
 use tauri::{AppHandle, Manager, WebviewWindow};
 
-/// Show the adhkar popup, positioned to bottom-right of primary screen.
+/// Show the adhkar popup, positioned at top-center of primary screen.
 #[tauri::command]
 pub fn show_adhkar(app: AppHandle) -> Result<(), String> {
     let window = app
         .get_webview_window("adhkar")
         .ok_or("adhkar window not found")?;
 
-    // Position to bottom-right corner
+    // Position at top-center
     if let Ok(Some(monitor)) = window.primary_monitor() {
         let screen_size = monitor.size();
         let scale = monitor.scale_factor();
-        let w = 420.0_f64;
-        let h = 240.0_f64;
-        let margin = 24.0_f64;
-        let x = (screen_size.width as f64 / scale) - w - margin;
-        let y = (screen_size.height as f64 / scale) - h - margin - 40.0; // 40px above taskbar
+        let w = 440.0_f64;
+        let x = ((screen_size.width as f64 / scale) - w) / 2.0;
 
-        let _ = window.set_position(tauri::LogicalPosition { x, y });
+        let _ = window.set_position(tauri::LogicalPosition { x, y: 0.0 });
+        let _ = window.set_size(tauri::LogicalSize { width: w as u32, height: 200 });
     }
 
     window.show().map_err(|e| e.to_string())?;
-    window.set_focus().map_err(|e| e.to_string())?;
+    // Don't steal focus for the peek notification
     Ok(())
 }
 

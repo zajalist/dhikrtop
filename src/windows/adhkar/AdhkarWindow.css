@@ -1,0 +1,269 @@
+/* AdhkarWindow.css — Peek-from-top notification UX */
+
+.adhkar-root {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%);
+  width: 420px;
+  background: transparent;
+  z-index: 9999;
+  cursor: pointer;
+  transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 300ms ease;
+  opacity: 0;
+  font-family: var(--font-ui);
+  pointer-events: auto;
+}
+
+/* ── Phase: hidden ─────────────────────────────────────────────────── */
+.adhkar-root.hidden {
+  transform: translateX(-50%) translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Phase: peek — slim strip peeks from top ───────────────────────── */
+.adhkar-root.peek {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.adhkar-root.peek .adhkar-expanded {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* ── Phase: jiggle — attention-grabbing wobble ─────────────────────── */
+.adhkar-root.jiggle {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  animation: jiggle 600ms ease-in-out;
+}
+
+.adhkar-root.jiggle .adhkar-expanded {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* ── Phase: expanded — full content revealed on hover ──────────────── */
+.adhkar-root.expanded {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  cursor: default;
+}
+
+.adhkar-root.expanded .adhkar-expanded {
+  max-height: 400px;
+  opacity: 1;
+}
+
+.adhkar-root.expanded .adhkar-peek-strip {
+  border-radius: 0 0 0 0;
+}
+
+/* ── Peek strip ────────────────────────────────────────────────────── */
+.adhkar-peek-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 20px;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.97) 0%, rgba(40, 20, 22, 0.97) 100%);
+  border: 1px solid rgba(207, 149, 85, 0.3);
+  border-top: none;
+  border-radius: 0 0 16px 16px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+              0 2px 8px rgba(207, 149, 85, 0.1);
+  min-height: 38px;
+  transition: border-radius 200ms ease;
+}
+
+.peek-icon {
+  font-size: 14px;
+  color: var(--accent, #cf9555);
+  opacity: 0.7;
+}
+
+.peek-text {
+  font-family: var(--font-arabic, 'Noto Naskh Arabic', Georgia, serif);
+  font-size: 14px;
+  color: var(--text-primary, #fff);
+  direction: rtl;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+  opacity: 0.9;
+}
+
+/* ── Expanded content ──────────────────────────────────────────────── */
+.adhkar-expanded {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 350ms cubic-bezier(0.34, 1.1, 0.64, 1),
+              opacity 250ms ease;
+  background: linear-gradient(180deg, rgba(26, 26, 26, 0.98) 0%, rgba(30, 18, 20, 0.98) 100%);
+  border-left: 1px solid rgba(207, 149, 85, 0.3);
+  border-right: 1px solid rgba(207, 149, 85, 0.3);
+  border-bottom: 1px solid rgba(207, 149, 85, 0.3);
+  border-radius: 0 0 16px 16px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Progress bar ──────────────────────────────────────────────────── */
+.adhkar-progress {
+  height: 2px;
+  background: rgba(207, 149, 85, 0.1);
+}
+
+.adhkar-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent, #cf9555), rgba(229, 179, 112, 0.8));
+  transition: width 100ms linear;
+  box-shadow: 0 0 8px rgba(207, 149, 85, 0.4);
+}
+
+/* ── Body ──────────────────────────────────────────────────────────── */
+.adhkar-body {
+  padding: 16px 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.adhkar-category {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent, #cf9555);
+  opacity: 0.8;
+}
+
+.adhkar-arabic {
+  font-family: var(--font-arabic, 'Noto Naskh Arabic', Georgia, serif);
+  font-size: 20px;
+  line-height: 1.6;
+  text-align: right;
+  direction: rtl;
+  color: var(--text-primary, #fff);
+  font-weight: 500;
+  margin: 0;
+  animation: contentFade 300ms 100ms both;
+}
+
+.adhkar-transliteration {
+  font-size: 11px;
+  color: var(--text-secondary, #d4d4d4);
+  font-style: italic;
+  line-height: 1.3;
+  margin: 0;
+  opacity: 0.8;
+  animation: contentFade 300ms 160ms both;
+}
+
+.adhkar-english {
+  font-size: 12px;
+  color: var(--text-secondary, #d4d4d4);
+  line-height: 1.45;
+  margin: 0;
+  animation: contentFade 300ms 220ms both;
+}
+
+.adhkar-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  animation: contentFade 300ms 280ms both;
+}
+
+.adhkar-source {
+  font-size: 10px;
+  color: var(--text-muted, #999);
+}
+
+.adhkar-repeat {
+  font-size: 10px;
+  color: var(--accent, #cf9555);
+  background: rgba(207, 149, 85, 0.1);
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* ── Actions ───────────────────────────────────────────────────────── */
+.adhkar-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px 12px;
+  animation: contentFade 300ms 320ms both;
+}
+
+.adhkar-spacer {
+  flex: 1;
+}
+
+.adhkar-btn {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-secondary, #d4d4d4);
+  transition: background 150ms, color 150ms, transform 80ms;
+}
+
+.adhkar-btn:hover {
+  background: rgba(207, 149, 85, 0.15);
+  color: var(--accent, #cf9555);
+  transform: scale(1.1);
+}
+
+.adhkar-btn:active {
+  transform: scale(0.95);
+}
+
+.adhkar-btn-dismiss {
+  color: var(--text-muted, #999);
+}
+
+.adhkar-btn-dismiss:hover {
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+}
+
+/* ── Animations ────────────────────────────────────────────────────── */
+@keyframes jiggle {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+  15% { transform: translateX(-50%) translateY(2px) rotate(-0.5deg); }
+  30% { transform: translateX(-50%) translateY(-1px) rotate(0.5deg); }
+  45% { transform: translateX(-50%) translateY(2px) rotate(-0.3deg); }
+  60% { transform: translateX(-50%) translateY(0) rotate(0.3deg); }
+  75% { transform: translateX(-50%) translateY(1px) rotate(-0.2deg); }
+  90% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+}
+
+@keyframes contentFade {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

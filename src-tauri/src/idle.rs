@@ -25,21 +25,20 @@ pub fn start(app: AppHandle) {
             let idle = system_idle_time();
             if idle >= idle_threshold {
                 let _ = app.emit("trigger-adhkar", ());
-                // Invoke the show_adhkar command via the app handle
+                // Show window positioned at top-center
                 let app2 = app.clone();
                 std::thread::spawn(move || {
                     if let Some(window) = app2.get_webview_window("adhkar") {
                         if let Ok(Some(monitor)) = window.primary_monitor() {
                             let screen = monitor.size();
                             let scale = monitor.scale_factor();
-                            let w = 420.0_f64;
-                            let h = 240.0_f64;
-                            let x = (screen.width as f64 / scale) - w - 24.0;
-                            let y = (screen.height as f64 / scale) - h - 64.0;
-                            let _ = window.set_position(tauri::LogicalPosition { x, y });
+                            let w = 440.0_f64;
+                            let x = ((screen.width as f64 / scale) - w) / 2.0;
+                            let _ = window.set_position(tauri::LogicalPosition { x, y: 0.0 });
+                            let _ = window.set_size(tauri::LogicalSize { width: w as u32, height: 200 });
                         }
                         let _ = window.show();
-                        let _ = window.set_focus();
+                        // Don't steal focus — the peek should be non-intrusive
                     }
                 });
                 last_shown = Instant::now();

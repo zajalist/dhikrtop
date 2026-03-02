@@ -68,8 +68,16 @@ pub fn run() {
                             if window.is_visible().unwrap_or(false) {
                                 let _ = window.hide();
                             } else {
+                                // Position at top-center
+                                if let Ok(Some(monitor)) = window.primary_monitor() {
+                                    let screen = monitor.size();
+                                    let scale = monitor.scale_factor();
+                                    let w = 440.0_f64;
+                                    let x = ((screen.width as f64 / scale) - w) / 2.0;
+                                    let _ = window.set_position(tauri::LogicalPosition { x, y: 0.0 });
+                                }
                                 let _ = window.show();
-                                let _ = window.set_focus();
+                                let _ = app.emit("trigger-adhkar", ());
                             }
                         }
                     }
