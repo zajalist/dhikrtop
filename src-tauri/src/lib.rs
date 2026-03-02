@@ -7,7 +7,7 @@ mod tests;
 use tauri::{
     menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
-    Manager,
+    Emitter, Manager,
 };
 
 pub fn run() {
@@ -72,9 +72,11 @@ pub fn run() {
                                 if let Ok(Some(monitor)) = window.primary_monitor() {
                                     let screen = monitor.size();
                                     let scale = monitor.scale_factor();
-                                    let w = 440.0_f64;
+                                    let w = 460.0_f64;
+                                    let h = 420.0_f64;
                                     let x = ((screen.width as f64 / scale) - w) / 2.0;
                                     let _ = window.set_position(tauri::LogicalPosition { x, y: 0.0 });
+                                    let _ = window.set_size(tauri::LogicalSize { width: w as u32, height: h as u32 });
                                 }
                                 let _ = window.show();
                                 let _ = app.emit("trigger-adhkar", ());

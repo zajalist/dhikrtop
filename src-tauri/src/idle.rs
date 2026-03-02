@@ -32,10 +32,11 @@ pub fn start(app: AppHandle) {
                         if let Ok(Some(monitor)) = window.primary_monitor() {
                             let screen = monitor.size();
                             let scale = monitor.scale_factor();
-                            let w = 440.0_f64;
+                            let w = 460.0_f64;
+                            let h = 420.0_f64;
                             let x = ((screen.width as f64 / scale) - w) / 2.0;
                             let _ = window.set_position(tauri::LogicalPosition { x, y: 0.0 });
-                            let _ = window.set_size(tauri::LogicalSize { width: w as u32, height: 200 });
+                            let _ = window.set_size(tauri::LogicalSize { width: w as u32, height: h as u32 });
                         }
                         let _ = window.show();
                         // Don't steal focus — the peek should be non-intrusive
