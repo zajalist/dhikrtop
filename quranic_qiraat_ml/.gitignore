@@ -1,0 +1,45 @@
+# Data files (large audio files)
+data/raw/
+data/processed/
+data/cache/
+*.wav
+*.mp3
+*.flac
+*.m4a
+
+# Model checkpoints
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+
+# Logs
+logs/
+training.log
+preprocess.log
+*.log
+
+# Weights & Biases
+wandb/
+.wandb
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.gitkeep

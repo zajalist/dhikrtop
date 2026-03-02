@@ -1,0 +1,587 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2026-03-01",
+    "purpose": "Centralized mapping of Quranic reciters to their Qira'at, source datasets, and tajweed characteristics",
+    "note": "This mapping ensures NO duplicate reciters across datasets and maintains data integrity"
+  },
+  
+  "reciters": {
+    "abdul_basit": {
+      "english_name": "Abdul Basit",
+      "arabic_name": "عبد الباسط عبد الصمد",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Egypt",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs",
+        "noon_tanween": {
+          "izhar": "ء ه ع ح غ خ | Clear pronunciation, no nasalization",
+          "idgham_with_ghunnah": "ي ن م و | Merge + nasal sound (35-40ms)",
+          "idgham_without_ghunnah": "ل ر | Merge without nasal sound",
+          "iqlab": "ب | Hidden m-sound with ghunnah (35-40ms)",
+          "ikhfa": "ت ث ج د ذ ز س ش ص ض ط ظ ف ق ك | Nasal sound held (15 letters)"
+        },
+        "meem_sakinah": {
+          "ikhfa_shafawi": "ب | Hidden m with ghunnah (35-40ms)",
+          "idgham_shafawi": "م | Merge with ghunnah (35-40ms)",
+          "izhar_shafawi": "Other letters | Clear m pronunciation"
+        },
+        "ghunnah": {
+          "duration_ms": "35-40",
+          "frequency_hz": "~250 (nasal formant)",
+          "occurs_in": "نّ (noon with shaddah), مّ (meem with shaddah), idgham cases",
+          "prominence": "Standard"
+        },
+        "qalqalah": {
+          "letters": "ق ط ب ج د",
+          "minor": "Middle of word (30-50ms bounce)",
+          "major": "At stopping/Waqf (50-100ms bounce)"
+        },
+        "madd": {
+          "madd_tabii": "2 counts | ا (after fatha), و (after damma), ي (after kasrah)",
+          "madd_munfasal": "4-5 counts | Vowel at word end, hamzah next word",
+          "madd_muttasal": "4-5 counts | Hamzah in same word",
+          "madd_arid_sukun": "2, 4, or 6 counts | At Waqf (stopping)",
+          "madd_lazim": "6 counts | Legal/required elongation",
+          "madd_badal": "2 counts | Hamzah before alif",
+          "madd_lin": "2 or 4 counts | After fatha"
+        },
+        "tafkhim_tarqiq": {
+          "always_heavy": "ق ط ظ ض ع غ خ ص",
+          "conditional_ra": "ر | Heavy (fatha/damma), Light (kasrah)",
+          "conditional_lam": "ل | Heavy in 'Allah', Light elsewhere (F1 shifts: back vs front)",
+          "light_letters": "All others"
+        },
+        "ra_rules": {
+          "fatha": "Heavy (tafkhim) | F1 ~300Hz (back of mouth)",
+          "damma": "Heavy (tafkhim) | F1 ~300Hz (back of mouth)",
+          "kasrah": "Light (tarqiq) | F1 ~400Hz (front of mouth)"
+        },
+        "lam_allah": {
+          "rule": "Only in الله",
+          "fatha_damma": "Heavy (tafkhim) | F1 ~250Hz (back)",
+          "kasrah": "Light (tarqiq) | F1 ~350Hz (front)"
+        },
+        "waqf_ibtida": {
+          "waqf": "Stop with extended final vowel (2-6 counts)",
+          "wasl": "Continue naturally (2 counts typical)"
+        },
+        "makharij": {
+          "throat": "ء ع ح غ خ | Deep throat or throat regions",
+          "tongue_palate": "ق ك ج ش ي ط د ت ل ن ث ذ ز س ص ر | Tongue at various palate positions",
+          "lips": "م ب ف | Bilabial or labio-dental",
+          "nasal": "ن (noon+ghunnah), م (meem+ghunnah)"
+        },
+        "sifat": {
+          "hams_voiceless": "ف ح ش خ ث س ت ك ء | Breathy sound",
+          "jahr_voiced": "All others | Full vocalization",
+          "shiddah_stress": "ق ط ب ج د | Strong emphasis",
+          "isti_ala_elevation": "ق غ خ ص ض ط ظ | Back of mouth, lower formants"
+        }
+      }
+    },
+
+    "abdurrahmaan_as_sudais": {
+      "english_name": "Abdurrahmaan As-Sudais",
+      "arabic_name": "عبد الرحمن السديس",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Saudi Arabia",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "description": "Standard Hafs application - identical rules to Abdul Basit",
+        "qiraat_type": "Hafs",
+        "ghunnah_duration_ms": "35-40",
+        "idgham_with_ghunnah_letters": "ي ن م و",
+        "idgham_without_ghunnah_letters": "ل ر",
+        "imalah": "Absent (Warsh feature)",
+        "madd_munfasal_standard": "4-5 counts",
+        "tafkhim_letters": "ق ط ظ ض ع غ خ ص + conditional ر ل"
+      }
+    },
+
+    "husary": {
+      "english_name": "Husary",
+      "arabic_name": "الحصري",
+      "qiraat": "Hafs",
+      "recitation_style": ["Murattal", "Mujawwad"],
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Egypt",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "description": "Standard Hafs with clear pronunciation in both Murattal and Mujawwad styles",
+        "qiraat_type": "Hafs",
+        "note": "Same tajweed rules as other Hafs reciters; differences are stylistic (murattal vs mujawwad) not rule-based",
+        "ghunnah_duration_ms": "35-40",
+        "idgham": "Both with and without ghunnah depending on letter",
+        "imalah": "Not present (Hafs characteristic)",
+        "madd_flexibility": "Strict Hafs counts (4-5, not extended)"
+      }
+    },
+
+    "husary_warsh": {
+      "english_name": "Husary (Warsh)",
+      "arabic_name": "الحصري - ورش",
+      "qiraat": "Warsh",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Egypt",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "description": "WARSH READING - distinctive features for model learning",
+        "qiraat_type": "Warsh",
+        "primary_difference_from_hafs": "Extended ghunnah duration and strong imalah presence",
+        "ghunnah": {
+          "duration_ms": "45-55",
+          "key_feature": "LONGER than Hafs (35-40ms); use duration as main classifier",
+          "frequency_hz": "~250 (same frequency, but extended)"
+        },
+        "noon_tanween": {
+          "idgham_with_ghunnah": "ي ن م و | Extended 45-55ms nasal sound (longer than Hafs)",
+          "idgham_without_ghunnah": "ل ر | Same as Hafs",
+          "ikhfa_kha": "خ is IKHFA (partial hide) in Warsh vs IZHAR (clear) in Hafs - KEY DIFFERENCE"
+        },
+        "imalah": {
+          "description": "STRONGEST WARSH DISTINGUISHER",
+          "definition": "Vowel shift toward Ya (ي) sound - formant migration upward",
+          "present_in": "Alef (ا) + certain vowel contexts",
+          "formant_shift": "Hafs: ~700Hz (no shift) | Warsh: ~750-850Hz (shifted toward ي)",
+          "examples": "الحمد في الفاتحة - formant migration noticeable",
+          "detection_signal": "F1 shifts up by 50-150Hz compared to Hafs"
+        },
+        "lam_tafkhim": {
+          "hafs": "Heavy after Damma in الله",
+          "warsh": "Lighter/softer treatment; not as emphasized",
+          "signal": "F1 higher in Warsh, indicating front-of-mouth position"
+        },
+        "madd": {
+          "munfasal": "4-5 counts like Hafs, but may favor 5 more often",
+          "flexibility": "More flexible in madd application than strict Hafs"
+        }
+      }
+    },
+
+    "yassin_warsh": {
+      "english_name": "Yassin (Warsh)",
+      "arabic_name": "ياسين - ورش",
+      "qiraat": "Warsh",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Tunisia",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "description": "WARSH READING - North African style",
+        "qiraat_type": "Warsh",
+        "characteristic_accent": "Tunisian/North African accent with strong Warsh features",
+        "ghunnah": {
+          "duration_ms": "45-55",
+          "key_feature": "Extended nasal resonance (longer than Hafs 35-40ms)",
+          "prominence": "Strong, very noticeable"
+        },
+        "imalah": {
+          "description": "VERY STRONG in North African Warsh",
+          "strength": "More pronounced than Egyptian Warsh (Husary Warsh)",
+          "vowel_shift": "Clear F1 migration in ا contexts",
+          "formant_change": "~800-900Hz vs Hafs 700Hz - larger shift",
+          "detection_signal": "Strong, easily detectable nasal-like quality"
+        },
+        "idgham": {
+          "with_ghunnah_letters": "ي ن م و | Extended 45-55ms",
+          "without_ghunnah_letters": "ل ر | Softer than Hafs"
+        },
+        "lam_tafkhim": "Very soft/light; not emphasized after Damma",
+        "regional_marker": "North African characteristics add additional accent variations"
+      }
+    },
+
+    "saood_ash_shuraym": {
+      "english_name": "Saood Ash-Shuraym",
+      "arabic_name": "سعود الشريم",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Saudi Arabia",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs | Standard canonical",
+        "ghunnah_duration_ms": "35-40 | Standard Hafs",
+        "idgham": "Letters: ي ن م و (with ghunnah 35-40ms), ل ر (without ghunnah)",
+        "imalah": "Absent - Hafs characteristic",
+        "tafkhim": "Heavy letters: ق ط ظ ض ع غ خ ص + ر,ل (conditional)",
+        "madd_munfasal": "4-5 counts (standard Hafs, strict)"
+      }
+    },
+
+    "yasser_ad_dussary": {
+      "english_name": "Yasser Ad-Dussary",
+      "arabic_name": "ياسر الدوسري",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Saudi Arabia",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs | Standard canonical",
+        "ghunnah_duration_ms": "35-40 | Standard Hafs",
+        "idgham": "With ghunnah (ي ن م و): 35-40ms nasal sound",
+        "imalah": "Not present - Hafs only",
+        "lam_tafkhim": "Present after damma in الله",
+        "distinctive_feature": "Very clear, pleasant melodic style makes tajweed rules distinct"
+      }
+    },
+
+    "mustafa_ismail": {
+      "english_name": "Mustafa Ismail",
+      "arabic_name": "مصطفى إسماعيل",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Egypt",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs | Standard",
+        "ghunnah_duration_ms": "35-40",
+        "idgham": "Standard Hafs idgham rules",
+        "imalah": "Absent",
+        "distinctive_feature": "Golden-era Egyptian style; excellent for historical Hafs study"
+      }
+    },
+
+    "alafasy": {
+      "english_name": "Alafasy",
+      "arabic_name": "الأفاسي",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Kuwait",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs",
+        "ghunnah_duration_ms": "35-40",
+        "idgham_with_ghunnah": "ي ن م و (35-40ms)",
+        "idgham_without_ghunnah": "ل ر",
+        "imalah": "Absent",
+        "madd_munfasal": "4-5 counts",
+        "tafkhim": "Standard heavy letters"
+      }
+    },
+
+    "minshawy": {
+      "english_name": "Minshawy",
+      "arabic_name": "منشاوي",
+      "qiraat": "Hafs",
+      "recitation_style": ["Murattal", "Mujawwad"],
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Egypt",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs | Both Murattal and Mujawwad styles",
+        "ghunnah_duration_ms": "35-40 (consistent across styles)",
+        "idgham": "Standard Hafs rules",
+        "imalah": "Absent - Hafs",
+        "stylistic_note": "Murattal and Mujawwad share same tajweed rules; style affects melody, not rules"
+      }
+    },
+
+    "abdul_samad": {
+      "english_name": "Abdul Samad",
+      "arabic_name": "عبد الصمد",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Egypt",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs",
+        "ghunnah_duration_ms": "35-40",
+        "distinctive_feature": "Slow, deliberate pace - excellent for learning tajweed rules",
+        "idgham": "Clear Hafs idgham patterns",
+        "imalah": "Not present"
+      }
+    },
+
+    "abdul_latif_khayal": {
+      "english_name": "Abdul Latif Khayal",
+      "arabic_name": "عبد اللطيف خيال",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Egypt",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs",
+        "ghunnah_duration_ms": "35-40",
+        "idgham": "Standard Hafs",
+        "imalah": "Absent",
+        "tajweed_rules": "All standard Hafs rules applied"
+      }
+    },
+
+    "karim_mansoori": {
+      "english_name": "Karim Mansoori",
+      "arabic_name": "كريم منصوري",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "rabah2026/Quran-Ayah-Corpus",
+      "country": "Iran",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs",
+        "ghunnah_duration_ms": "35-40",
+        "idgham": "Standard Hafs rules",
+        "imalah": "Absent",
+        "dataset_role": "Test-set reciter (unique to rabah2026 for model evaluation)"
+      }
+    },
+
+    "aziz_alili": {
+      "english_name": "Aziz Alili",
+      "arabic_name": "عزيز العلي",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "rabah2026/Quran-Ayah-Corpus",
+      "country": "Tunisia",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs",
+        "ghunnah_duration_ms": "35-40",
+        "idgham": "Standard Hafs",
+        "imalah": "Not present",
+        "dataset_role": "Validation-set reciter (unique to rabah2026)"
+      }
+    },
+
+    "khalefa_al_tunaiji": {
+      "english_name": "Khalefa Al Tunaiji",
+      "arabic_name": "خليفة التنيجي",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "rabah2026/Quran-Ayah-Corpus",
+      "country": "UAE",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs",
+        "ghunnah_duration_ms": "35-40",
+        "idgham": "Standard Hafs idgham rules",
+        "imalah": "Absent",
+        "dataset_role": "Test-set reciter (unique to rabah2026)"
+      }
+    },
+
+    "mahmoud_ali_al_banna": {
+      "english_name": "Mahmoud Ali Al Banna",
+      "arabic_name": "محمود علي البنا",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "rabah2026/Quran-Ayah-Corpus",
+      "country": "Egypt",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs",
+        "ghunnah_duration_ms": "35-40",
+        "idgham": "Standard Hafs",
+        "imalah": "Not present",
+        "dataset_role": "Test-set reciter (unique to rabah2026 for evaluation)"
+      }
+    },
+
+    "ali_jaber": {
+      "english_name": "Ali Jaber",
+      "arabic_name": "علي جابر",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "UAE",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs",
+        "ghunnah_duration_ms": "35-40",
+        "idgham": "Standard Hafs",
+        "imalah": "Absent",
+        "voice_quality": "Clear and pleasant"
+      }
+    },
+
+    "hani_rifai": {
+      "english_name": "Hani Rifai",
+      "arabic_name": "هاني رفاعي",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Syria",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs",
+        "ghunnah_duration_ms": "35-40",
+        "idgham": "Standard Hafs rules",
+        "imalah": "Not present",
+        "pace": "Moderate, clear pronunciation"
+      }
+    },
+
+    "nasser_alqatami": {
+      "english_name": "Nasser Alqatami",
+      "arabic_name": "ناصر القطامي",
+      "qiraat": "Hafs",
+      "recitation_style": "Murattal",
+      "sources": ["Buraaq/quran-audio-text-dataset", "rabah2026/Quran-Ayah-Corpus"],
+      "primary_source": "Buraaq/quran-audio-text-dataset",
+      "country": "Saudi Arabia",
+      "is_canonical": true,
+      "tajweed_characteristics": {
+        "qiraat_type": "Hafs",
+        "ghunnah_duration_ms": "35-40",
+        "idgham": "Standard Hafs",
+        "imalah": "Absent",
+        "style": "Modern, precise Hafs application"
+      }
+    },
+
+    "crowdsourced_nonnative_speakers": {
+      "english_name": "Crowdsourced - Non-Native Arabic Speakers",
+      "arabic_name": "متحدثون غير أصليين - مصدر مجتمعي",
+      "qiraat": "Hafs (primarily)",
+      "recitation_style": "Beginner/Learner/Variable",
+      "sources": ["quranic-audio-dataset.github.io"],
+      "primary_source": "quranic-audio-dataset.github.io",
+      "country": "Multiple",
+      "is_canonical": false,
+      "note": "Recordings from non-native Arabic speakers learning Quranic recitation. Valuable for model robustness and diversity testing.",
+      "tajweed_characteristics": {
+        "description": "VARIABLE - Not following canonical tajweed rules consistently",
+        "qiraat_type": "Intended Hafs, but application is inconsistent",
+        "ghunnah_duration": "Variable/Inconsistent (may range 30-60ms unpredictably)",
+        "idgham": "Variable - may not apply rules correctly",
+        "imalah": "Variable - typically absent but inconsistent",
+        "lam_tafkhim": "Variable - may not apply correctly",
+        "waqf_rules": "May not follow official waqf marks",
+        "madd_duration": "Inconsistent with canonical counts",
+        "articulation": "Non-native accent affects makharij al-huruf",
+        "learning_value": "Tests model robustness to non-perfect pronunciation",
+        "use_case": "Valuable for evaluating how well model generalizes to average learners"
+      }
+    },
+  },
+
+  "dataset_summary": {
+    "1_Buraaq_quran_audio_text": {
+      "name": "Buraaq/quran-audio-text-dataset",
+      "url": "https://huggingface.co/datasets/Buraaq/quran-audio-text-dataset",
+      "total_reciters": 30,
+      "total_ayah_samples": 187080,
+      "hafs_reciters": 28,
+      "warsh_reciters": 2,
+      "reciters": [
+        "Abdul Basit", "Abdullaah 3awwaad Al-Juhaynee", "Abdullah Basfar", "Abdul Samad",
+        "Abdurrahmaan As-Sudais", "Abu Bakr Ash-Shaatree", "Alafasy", "Ali Jaber",
+        "Ayman Sowaid", "Banna", "Fares Abbad", "Ghamadi", "Hani Rifai", "Hudhaify",
+        "Husary", "Husary (Mujawwad)", "Husary (Teacher)", "Husary (Warsh)",
+        "Ibrahim Akhdar", "Minshawy (Mujawwad)", "Minshawy (Murattal)", "Minshawy (Teacher)",
+        "Mostafa Ismail", "Muhammad Jibreel", "Muhsin Al-Qasim", "Nasser Alqatami",
+        "Saood Ash-Shuraym", "Tunaiji", "Yassin (Warsh)", "Yasser Ad-Dussary"
+      ],
+      "features": ["ayah_number", "surah_number", "ayah_text", "reciter_name", "audio_path", "recitation_speed"],
+      "audio_format": "MP3",
+      "key_advantage": "Complete Quran with both Hafs and Warsh variants from professional reciters"
+    },
+
+    "2_rabah2026_Quran_Ayah_Corpus": {
+      "name": "rabah2026/Quran-Ayah-Corpus",
+      "url": "https://huggingface.co/datasets/rabah2026/Quran-Ayah-Corpus",
+      "total_samples": 263263,
+      "total_reciters": 44,
+      "train_reciters": 38,
+      "validation_reciters": 3,
+      "test_reciters": 3,
+      "hafs_reciters": 44,
+      "warsh_reciters": 0,
+      "note": "Only Hafs recordings - no Warsh variant",
+      "features": ["audio", "duration", "text", "reciter"],
+      "audio_format": "WAV",
+      "sampling_rate": 16000,
+      "key_advantage": "Clean, ASR-ready dataset with transcriptions; strict reciter separation (no data leakage)"
+    },
+
+    "3_obadx_mualem_recitations_original": {
+      "name": "obadx/mualem-recitations-original",
+      "url": "https://huggingface.co/datasets/obadx/mualem-recitations-original",
+      "total_moshaf": 49,
+      "hafs_reciters": "Variable",
+      "warsh_reciters": "Variable",
+      "features": [
+        "detailed_tajweed_annotations",
+        "ghonna_lam_and_raa",
+        "madd_monfasel_len",
+        "madd_mottasel_len",
+        "idgham_rules",
+        "imalah_markers",
+        "recitation_speed",
+        "takbeer_style",
+        "meem_aal_imran",
+        "sakt_rules",
+        "yaa_affirmation",
+        "ra_emphasis",
+        "lam_tafkhim"
+      ],
+      "audio_format": "MP3",
+      "key_advantage": "MOST DETAILED: Extensive tajweed rule annotations at individual rule level; perfect for tajweed rule training"
+    },
+
+    "4_quranic_audio_dataset_github": {
+      "name": "quranic-audio-dataset.github.io (Crowdsourced)",
+      "url": "https://quranic-audio-dataset.github.io/",
+      "type": "Crowdsourced",
+      "speakers": "Non-native Arabic speakers (learners)",
+      "qiraat": "Variable/Unspecified",
+      "key_advantage": "Diversity of pronunciation from non-native speakers; useful for robustness testing and average-person recitation"
+    }
+  },
+
+  "deduplication_strategy": {
+    "approach": "Use primary_source field to ensure no-duplicates",
+    "rule_1": "Each reciter appears in only ONE primary source",
+    "rule_2": "When a reciter exists in multiple datasets, primary_source designates the canonical version",
+    "rule_3": "Secondary sources are tracked for reference but not for downloading",
+    "rule_4": "Buraaq is primary for most canonical reciters (most complete with Warsh variants)",
+    "rule_5": "rabah2026 used only for test-set reciters (Karim Mansoori, Aziz Alili, Khalefa Al Tunaiji, Mahmoud Ali Al Banna)"
+  },
+
+  "qiraat_distribution": {
+    "hafs": {
+      "description": "Egyptian reading - most common (~85% of Quranic readers)",
+      "count": 40,
+      "reciters": "All non-Warsh reciters"
+    },
+    "warsh": {
+      "description": "North African reading - common in North Africa (~10% of readers)",
+      "count": 2,
+      "reciters": ["Husary (Warsh)", "Yassin (Warsh)"]
+    },
+    "future_qiraat": {
+      "planned": ["Qalun", "Ad-Duri", "Al-Kisai"],
+      "note": "Can be added with Phase 2 expansion"
+    }
+  }
+}

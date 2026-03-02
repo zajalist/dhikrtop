@@ -1,0 +1,481 @@
+/* Waterfall Adhkar Popup - Modern Design with Glassmorphism */
+
+:root {
+  /* Light theme colors */
+  --wf-light-bg: #ffffff;
+  --wf-light-border: rgba(0, 0, 0, 0.08);
+  --wf-light-text: #1a1a1a;
+  --wf-light-label: #666666;
+  --wf-light-accent: #3b82f6;
+
+  /* Dark theme colors */
+  --wf-dark-bg: #0f172a;
+  --wf-dark-border: rgba(255, 255, 255, 0.08);
+  --wf-dark-text: #f1f5f9;
+  --wf-dark-label: #94a3b8;
+  --wf-dark-accent: #60a5fa;
+
+  /* Gradient colors */
+  --wf-gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --wf-gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --wf-gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+
+  /* Animations */
+  --wf-transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Overlay */
+.waterfall-popup-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  padding: 20px;
+}
+
+.waterfall-popup-overlay.light {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.waterfall-popup-overlay.dark {
+  background-color: rgba(15, 23, 42, 0.5);
+}
+
+.waterfall-popup-overlay.visible {
+  opacity: 1;
+}
+
+.waterfall-popup-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Container */
+.waterfall-popup-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid;
+  transform: scale(0.8);
+  opacity: 0;
+  animation: popupEntrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.waterfall-popup-overlay.light .waterfall-popup-container {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: var(--wf-light-text);
+}
+
+.waterfall-popup-overlay.dark .waterfall-popup-container {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--wf-dark-text);
+}
+
+@keyframes popupEntrance {
+  from {
+    transform: scale(0.8) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Gradient Background */
+.waterfall-gradient-bg {
+  position: absolute;
+  inset: 0;
+  background: var(--wf-gradient-1);
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+/* Content */
+.waterfall-content {
+  padding: 40px 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Text Blocks - Waterfall Effect */
+.waterfall-text-block {
+  opacity: 0;
+  transform: translateY(20px);
+  margin-bottom: 28px;
+  animation: waterfallCascade forwards;
+}
+
+@keyframes waterfallCascade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Labels */
+.waterfall-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--wf-gradient-1));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.8;
+}
+
+/* Arabic Text Block */
+.waterfall-text-block.arabic .waterfall-arabic-text {
+  font-size: 28px;
+  line-height: 1.8;
+  font-weight: 500;
+  direction: rtl;
+  text-align: right;
+  margin: 0;
+  letter-spacing: 0.5px;
+  word-spacing: 4px;
+}
+
+.waterfall-popup-overlay.light .waterfall-text-block.arabic .waterfall-arabic-text {
+  color: #1a1a1a;
+}
+
+.waterfall-popup-overlay.dark .waterfall-text-block.arabic .waterfall-arabic-text {
+  color: #e0e7ff;
+}
+
+/* Transliteration Block */
+.waterfall-text-block.transliteration .waterfall-transliteration-text {
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+  direction: ltr;
+  text-align: left;
+  margin: 0;
+  letter-spacing: 0.3px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.waterfall-popup-overlay.light .waterfall-text-block.transliteration .waterfall-transliteration-text {
+  color: #555555;
+}
+
+.waterfall-popup-overlay.dark .waterfall-text-block.transliteration .waterfall-transliteration-text {
+  color: #cbd5e1;
+}
+
+/* English Text Block */
+.waterfall-text-block.english .waterfall-english-text {
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 400;
+  direction: ltr;
+  text-align: left;
+  margin: 0;
+  letter-spacing: 0.2px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.waterfall-popup-overlay.light .waterfall-text-block.english .waterfall-english-text {
+  color: #444444;
+}
+
+.waterfall-popup-overlay.dark .waterfall-text-block.english .waterfall-english-text {
+  color: #cbd5e1;
+}
+
+/* Source Attribution */
+.waterfall-source {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  animation: waterfallCascade forwards;
+}
+
+.waterfall-popup-overlay.light .waterfall-source {
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #666666;
+}
+
+.waterfall-popup-overlay.dark .waterfall-source {
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+}
+
+.waterfall-source .source-label {
+  font-weight: 600;
+}
+
+/* Action Buttons */
+.waterfall-actions {
+  display: flex;
+  gap: 12px;
+  padding: 20px 32px 32px;
+  justify-content: flex-end;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.01) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border-top: 1px solid;
+}
+
+.waterfall-popup-overlay.light .waterfall-actions {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.waterfall-popup-overlay.dark .waterfall-actions {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Button Base Styles */
+.waterfall-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--wf-transition);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+  outline: none;
+}
+
+.waterfall-btn svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.waterfall-btn:active {
+  transform: scale(0.95);
+}
+
+/* Snooze Button */
+.waterfall-btn.btn-snooze {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.waterfall-popup-overlay.dark .waterfall-btn.btn-snooze {
+  background: rgba(96, 165, 250, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+}
+
+.waterfall-btn.btn-snooze.hovered {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+}
+
+/* Dislike Button */
+.waterfall-btn.btn-dislike {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.waterfall-popup-overlay.dark .waterfall-btn.btn-dislike {
+  background: rgba(248, 113, 113, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.waterfall-btn.btn-dislike.hovered {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.2);
+}
+
+/* Like Button */
+.waterfall-btn.btn-like {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  border: none;
+  font-weight: 600;
+  position: relative;
+}
+
+.waterfall-btn.btn-like::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.waterfall-btn.btn-like.hovered {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+}
+
+.waterfall-btn.btn-like.hovered svg {
+  transform: scale(1.1);
+  animation: heartBeat 0.4s ease;
+}
+
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+/* Dismiss Button */
+.waterfall-btn.btn-dismiss {
+  background: rgba(100, 116, 139, 0.15);
+  color: #64748b;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+.waterfall-popup-overlay.dark .waterfall-btn.btn-dismiss {
+  background: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.waterfall-btn.btn-dismiss.hovered {
+  background: rgba(100, 116, 139, 0.25);
+  border-color: rgba(100, 116, 139, 0.5);
+  transform: translateY(-2px) rotate(90deg);
+  box-shadow: 0 8px 16px rgba(100, 116, 139, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .waterfall-popup-container {
+    max-width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .waterfall-content {
+    padding: 28px 20px;
+  }
+
+  .waterfall-text-block.arabic .waterfall-arabic-text {
+    font-size: 24px;
+  }
+
+  .waterfall-text-block.transliteration .waterfall-transliteration-text,
+  .waterfall-text-block.english .waterfall-english-text {
+    font-size: 14px;
+  }
+
+  .waterfall-actions {
+    padding: 16px 20px 20px;
+    gap: 8px;
+  }
+
+  .waterfall-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .waterfall-btn span {
+    display: none;
+  }
+
+  .waterfall-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Scrollbar Styling */
+.waterfall-popup-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.waterfall-popup-overlay.light .waterfall-popup-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.waterfall-popup-overlay.dark .waterfall-popup-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.waterfall-popup-overlay.light .waterfall-popup-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
+
+.waterfall-popup-overlay.light .waterfall-popup-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.waterfall-popup-overlay.dark .waterfall-popup-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+.waterfall-popup-overlay.dark .waterfall-popup-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Print Styles */
+@media print {
+  .waterfall-popup-overlay {
+    display: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .waterfall-popup-overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .waterfall-text-block,
+  .waterfall-source,
+  .waterfall-btn,
+  .waterfall-popup-container {
+    animation: none !important;
+    transition: none !important;
+  }
+}

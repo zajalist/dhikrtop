@@ -1,0 +1,69 @@
+/* ── Reset & Variables ─────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Color Palette */
+  --primary: #6a2428;      /* Maroon - main app color */
+  --accent: #cf9555;       /* Gold - buttons, accents */
+  --bg: #1a1a1a;           /* Dark background */
+  --bg-card: rgba(26, 26, 26, 0.98);
+  --bg-elevated: rgba(45, 45, 45, 0.9);
+  --border: rgba(207, 149, 85, 0.15);
+  --border-accent: rgba(207, 149, 85, 0.3);
+  --text-primary: #ffffff;
+  --text-secondary: #d4d4d4;
+  --text-muted: #999999;
+  --accent-dim: rgba(207, 149, 85, 0.1);
+  --red: #e74c3c;
+  --amber: #f39c12;
+  --green: #27ae60;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.7);
+  --font-arabic: 'Noto Naskh Arabic', 'Amiri', 'Traditional Arabic', Georgia, serif;
+  --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  font-family: var(--font-ui);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  user-select: none;
+  font-size: 14px;
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-accent); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── Button Base Styles ─────────────────────────────────────────────────── */
+button {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  border-radius: var(--radius-sm);
+}
+
+/* ── Utilities ─────────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip: rect(0, 0, 0, 0);
+  overflow: hidden;
+}
