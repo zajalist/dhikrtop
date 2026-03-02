@@ -3,15 +3,10 @@
   "configurations": [
     {
       "name": "Tauri: Dev",
-      "type": "shell",
+      "type": "node-terminal",
       "request": "launch",
-      "command": "cargo tauri dev",
-      "cwd": "${workspaceFolder}/src-tauri",
-      "terminal": "integrated",
-      "presentation": {
-        "reveal": "always",
-        "panel": "integrated"
-      }
+      "command": "npm run app:dev",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }
