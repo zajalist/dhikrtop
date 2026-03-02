@@ -17,5 +17,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  "exclude": ["src/sidepanel/**", "node_modules", "src-tauri"]
+  "exclude": ["src/sidepanel/**", "node_modules", "src-tauri", "src/**/__tests__/**", "src/**/*.test.*", "tests"]
 }
