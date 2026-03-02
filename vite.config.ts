@@ -1,7 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
-import { writeFileSync, mkdirSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { writeFileSync, mkdirSync, readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Plugin to copy index.html to sub-paths so Tauri can load /setup and /settings
 function tauriSpaFallback() {
@@ -10,8 +13,6 @@ function tauriSpaFallback() {
     closeBundle() {
       const distDir = resolve(__dirname, 'dist');
       const indexHtml = resolve(distDir, 'index.html');
-      // Read the built index.html
-      const { readFileSync } = require('fs');
       const html = readFileSync(indexHtml, 'utf-8');
       // Create copies for each Tauri window route
       for (const route of ['setup', 'settings']) {
