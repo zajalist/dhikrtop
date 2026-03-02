@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle, Info, XCircle, X, Bell, Sun, Moon, Star, Zap, TrendingUp, Award, ChevronRight } from 'lucide-react';
 import { GlowCard } from '../shared/BackgroundEffects';

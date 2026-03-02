@@ -1,7 +1,10 @@
-import { Outlet, NavLink, useLocation } from 'react-router';
+import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Home, BookOpen, Heart, Settings, Bell } from 'lucide-react';
 import { BackgroundEffects } from '../shared/BackgroundEffects';
+import { NotificationCenter } from '../notifications/FloatingNotification';
+import { useEffect } from 'react';
+import { trackActivity } from '../../lib/notifications';
 
 const navItems = [
   { path: '/', icon: Home, label: 'Home' },
@@ -13,12 +16,32 @@ const navItems = [
 export function RootLayout() {
   const location = useLocation();
 
+  // Track user activity for idle detection
+  useEffect(() => {
+    const events = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+    
+    const handleActivity = () => {
+      trackActivity();
+    };
+
+    events.forEach((event) => {
+      document.addEventListener(event, handleActivity);
+    });
+
+    return () => {
+      events.forEach((event) => {
+        document.removeEventListener(event, handleActivity);
+      });
+    };
+  }, []);
+
   return (
     <div
       className="fixed inset-0 flex overflow-hidden"
       style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
     >
       <BackgroundEffects />
+      <NotificationCenter maxNotifications={3} />
 
       {/* Sidebar — desktop */}
       <aside

@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter } from 'react-router-dom';
 import { RootLayout } from './components/layout/RootLayout';
 import { Home } from './components/home/Home';
 import { DhikrSession } from './components/dhikr/DhikrSession';
@@ -30,3 +30,4 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
