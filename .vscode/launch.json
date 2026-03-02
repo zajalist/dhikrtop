@@ -8,6 +8,20 @@
       "command": "npm run app:dev",
       "cwd": "${workspaceFolder}",
       "preLaunchTask": "Kill Dev Servers"
+    },
+    {
+      "name": "Tauri: Dev (Windows Only)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run app:dev",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Kill Dev Servers"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Tauri: Development (Multi-platform)",
+      "configurations": ["Tauri: Dev"]
     }
   ]
 }

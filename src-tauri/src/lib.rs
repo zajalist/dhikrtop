@@ -1,6 +1,9 @@
 mod commands;
 mod idle;
 
+#[cfg(test)]
+mod tests;
+
 use tauri::{
     menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
