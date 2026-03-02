@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "rust",
+      "label": "Debug Tauri App",
+      "request": "launch",
+      "command": "cargo",
+      "args": ["tauri", "dev"],
+      "cwd": "${workspaceFolder}/src-tauri",
+      "stopOnEntry": false,
+      "console": "integratedTerminal",
+      "sourceLanguages": ["rust"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Tauri Dev",
+      "configurations": ["Debug Tauri App"]
+    }
+  ]
+}

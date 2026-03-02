@@ -1,0 +1,10 @@
+cd /home/zajalist/projects/dhikrtop/src-tauri
+
+# Set environment variables
+export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
+export DISPLAY=172.18.96.1:0
+export LIBGL_ALWAYS_INDIRECT=1
+export GDK_SCALE=1
+
+# Run the app
+cargo run

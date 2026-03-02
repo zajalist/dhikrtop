@@ -32,9 +32,7 @@ jobs:
         run: npm run build
       
       - name: Build Tauri app
-        run: |
-          cd src-tauri
-          cargo tauri build --bundles msi nsis
+        run: npm run app:build -- --bundles msi,nsis
       
       - name: Upload MSI to Release
         uses: softprops/action-gh-release@v1
