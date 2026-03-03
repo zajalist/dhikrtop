@@ -1,23 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { listen } from '@tauri-apps/api/event';
 import { pickRandom } from '../../lib/adhkarData';
-import { getPreferences, hideAdhkar, openSettings } from '../../lib/store';
+import { getPreferences, openSettings } from '../../lib/store';
 import type { Adhkar, Preferences } from '../../lib/types';
 import { DEFAULT_PREFERENCES } from '../../lib/types';
 import './AdhkarWindow.css';
 
-type Phase = 'hidden' | 'peek' | 'jiggle' | 'expanded' | 'dismissing';
+type Phase = 'hidden' | 'peek' | 'jiggle' | 'expanded';
 
 export default function AdhkarWindow() {
   const [adhkar, setAdhkar] = useState<Adhkar>(() => pickRandom(DEFAULT_PREFERENCES.categories));
   const [prefs, setPrefs] = useState<Preferences>(DEFAULT_PREFERENCES);
   const [phase, setPhase] = useState<Phase>('hidden');
   const [summon, setSummon] = useState(false);
-  const [progress, setProgress] = useState(100);
-  const startRef = useRef(Date.now());
-  const rafRef = useRef<number | undefined>(undefined);
   const summonTimerRef = useRef<number | undefined>(undefined);
-  const autoDismissSec = 30;
 
   useEffect(() => {
     getPreferences().then((p) => {
@@ -32,7 +28,8 @@ export default function AdhkarWindow() {
         setPrefs(p);
         const newAdhkar = pickRandom(p.categories);
         setAdhkar(newAdhkar);
-        setPhase(p.openExpanded ? 'expanded' : 'peek');
+        // Always open fully expanded when summoned
+        setPhase('expanded');
         if (!p.reduceMotion) {
           setSummon(true);
           if (summonTimerRef.current) window.clearTimeout(summonTimerRef.current);
@@ -48,92 +45,42 @@ export default function AdhkarWindow() {
     };
   }, []);
 
-  // Phase state machine
+  // Phase state machine: peek ↔ jiggle cycle while minimised
   useEffect(() => {
     if (phase === 'peek') {
+      // After 800 ms start first jiggle to attract attention
       const t = setTimeout(() => setPhase('jiggle'), 800);
       return () => clearTimeout(t);
     }
     if (phase === 'jiggle') {
+      // Return to peek after animation, then re-jiggle every 6 s
       const t = setTimeout(() => setPhase('peek'), 2000);
       const interval = setInterval(() => {
-        setPhase((prev) => prev === 'peek' ? 'jiggle' : prev);
+        setPhase((prev) => (prev === 'peek' ? 'jiggle' : prev));
       }, 6000);
       return () => { clearTimeout(t); clearInterval(interval); };
     }
   }, [phase]);
 
-  // Auto-dismiss countdown
-  useEffect(() => {
-    if (prefs.openExpanded && phase === 'expanded') {
-      return;
-    }
-
-    if (phase !== 'expanded') {
-      if (phase === 'peek' || phase === 'jiggle') {
-        const t = setTimeout(() => dismiss(), 60000);
-        return () => clearTimeout(t);
-      }
-      return;
-    }
-    startRef.current = Date.now();
-    const duration = autoDismissSec * 1000;
-    const tick = () => {
-      const elapsed = Date.now() - startRef.current;
-      const pct = Math.max(0, 100 - (elapsed / duration) * 100);
-      setProgress(pct);
-      if (pct > 0) {
-        rafRef.current = requestAnimationFrame(tick);
-      } else {
-        dismiss();
-      }
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
-  }, [phase]);
-
-  const dismiss = useCallback(() => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    setPhase('dismissing');
-    setTimeout(() => {
-      setPhase('hidden');
-      setProgress(100);
-      hideAdhkar().catch(console.error);
-    }, 400);
-  }, []);
-
   const handleMouseEnter = useCallback(() => {
     if (phase === 'peek' || phase === 'jiggle') {
       setPhase('expanded');
     }
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
   }, [phase]);
 
+  // Mouse left the card area → collapse back to peek strip
   const handleMouseLeave = useCallback(() => {
     if (phase === 'expanded') {
-      startRef.current = Date.now() - ((100 - progress) / 100) * autoDismissSec * 1000;
-      const duration = autoDismissSec * 1000;
-      const tick = () => {
-        const elapsed = Date.now() - startRef.current;
-        const pct = Math.max(0, 100 - (elapsed / duration) * 100);
-        setProgress(pct);
-        if (pct > 0) {
-          rafRef.current = requestAnimationFrame(tick);
-        } else {
-          dismiss();
-        }
-      };
-      rafRef.current = requestAnimationFrame(tick);
+      setPhase('peek');
     }
-  }, [phase, progress, dismiss]);
+  }, [phase]);
 
   const handleClick = useCallback(() => {
-    if (phase === 'expanded') {
-      dismiss();
-    } else if (phase === 'peek' || phase === 'jiggle') {
+    // Clicking the peek strip expands; clicking the expanded card does nothing
+    if (phase === 'peek' || phase === 'jiggle') {
       setPhase('expanded');
     }
-  }, [phase, dismiss]);
+  }, [phase]);
 
   const handleSettings = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -143,8 +90,6 @@ export default function AdhkarWindow() {
   const nextAdhkar = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     setAdhkar(pickRandom(prefs.categories));
-    setProgress(100);
-    startRef.current = Date.now();
   }, [prefs.categories]);
 
   const categoryLabel = adhkar.category === 'morning' ? 'ADHKAR AS-SABAH'
@@ -152,7 +97,7 @@ export default function AdhkarWindow() {
     : adhkar.category === 'sleep' ? 'ADHKAR AN-NAWM'
     : 'ADHKAR';
 
-  const phaseClass = phase === 'dismissing' ? 'dismissing' : phase;
+  const phaseClass = phase;
 
   return (
     <div
@@ -170,11 +115,6 @@ export default function AdhkarWindow() {
 
       {/* Full card — shown in expanded phase */}
       <div className="adhkar-card">
-        {/* Progress bar */}
-        <div className="card-progress">
-          <div className="card-progress-fill" style={{ width: `${progress}%` }} />
-        </div>
-
         {/* Decorative corner ornament */}
         <div className="card-ornament-br" aria-hidden="true">
           <svg width="80" height="80" viewBox="0 0 80 80" fill="none" opacity="0.12">

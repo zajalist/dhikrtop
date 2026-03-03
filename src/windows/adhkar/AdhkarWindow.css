@@ -27,15 +27,6 @@
   pointer-events: none;
 }
 
-/* ── Phase: dismissing ─────────────────────────────────────────────── */
-.adhkar-root.dismissing {
-  transform: translateX(-50%) translateY(-110%);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 400ms cubic-bezier(0.55, 0.06, 0.68, 0.19),
-              opacity 300ms ease;
-}
-
 /* ── Phase: peek ───────────────────────────────────────────────────── */
 .adhkar-root.peek {
   transform: translateX(-50%) translateY(0);
@@ -72,14 +63,17 @@
   cursor: default;
 }
 
+/* Hide the peek strip entirely when the full card is shown */
 .adhkar-root.expanded .adhkar-peek-strip {
-  border-radius: 0;
-  border-bottom: none;
+  display: none;
 }
 
+/* Full card visible with fully-rounded top corners (no strip above it) */
 .adhkar-root.expanded .adhkar-card {
   max-height: 640px;
   opacity: 1;
+  border-top: 1px solid rgba(207, 149, 85, 0.2);
+  border-radius: 18px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
