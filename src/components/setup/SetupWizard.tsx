@@ -59,12 +59,12 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
 
     return (
         <div
-            className="fixed inset-0 overflow-y-auto"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            className="fixed inset-0 overflow-hidden"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "14px" }}
         >
             <BackgroundEffects />
 
-            <div className="relative z-10 min-h-full flex flex-col max-w-3xl mx-auto p-4 md:p-6">
+            <div className="relative z-10 h-full flex flex-col max-w-3xl mx-auto p-3 md:p-4 overflow-y-auto">
                 <div className="mb-4">
                     <p
                         style={{
@@ -78,11 +78,11 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
                     </p>
                     <h1
                         className="text-white"
-                        style={{ fontWeight: 700, fontSize: "1.7rem" }}
+                        style={{ fontWeight: 700, fontSize: "1.3rem" }}
                     >
                         {STEP_TITLES[step]}
                     </h1>
-                    <div className="mt-3 h-1 rounded-full bg-white/10 overflow-hidden">
+                    <div className="mt-2 h-1 rounded-full bg-white/10 overflow-hidden">
                         <motion.div
                             className="h-full"
                             style={{
@@ -96,7 +96,7 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
                 </div>
 
                 <div
-                    className="flex-1 rounded-3xl p-5 md:p-6 space-y-6"
+                    className="flex-1 rounded-3xl p-3 md:p-4 space-y-4"
                     style={{
                         background: "rgba(106,36,40,0.52)",
                         border: "1px solid rgba(220,160,72,0.22)",
@@ -108,7 +108,7 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
                             <p
                                 style={{
                                     color: "#D7C29F",
-                                    fontSize: "0.92rem",
+                                    fontSize: "0.8rem",
                                 }}
                             >
                                 Start with Basic Adhkar. You can build and
@@ -298,7 +298,7 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
                                         style={{
                                             color: "#48B16E",
                                             fontWeight: 600,
-                                            fontSize: "0.88rem",
+                                            fontSize: "0.75rem",
                                         }}
                                     >
                                         Ready: {tradition.cardLabel} with{" "}
@@ -310,12 +310,12 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
                     )}
                 </div>
 
-                <div className="pt-4 flex items-center justify-between">
+                <div className="pt-2 flex items-center justify-between gap-2">
                     <button
                         type="button"
                         onClick={() => setStep((s) => Math.max(0, s - 1))}
                         disabled={step === 0}
-                        className="px-5 py-2.5 rounded-xl flex items-center gap-2"
+                        className="px-4 py-2 rounded-xl flex items-center gap-1 text-sm"
                         style={{
                             opacity: step === 0 ? 0.35 : 1,
                             background: "rgba(255,255,255,0.05)",
