@@ -49,6 +49,7 @@
   - `WATERFALL_ADHKAR/` - Adhkar popup component
   - `VOICE_SYSTEM/` - Voice recording feature
   - `QURAN_READER/` - Quran reader component
+- **[TRADITIONS_WIZARD_IMPLEMENTATION/](./TRADITIONS_WIZARD_IMPLEMENTATION/)** - Tradition-based adhkar architecture and phased rollout
 
 ---
 

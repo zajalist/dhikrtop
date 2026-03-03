@@ -4,9 +4,13 @@ A beautiful, intelligent **Windows desktop app** (Tauri + React) that displays I
 
 ## 🚀 Current Status
 
-**v0.1.0** - Production Ready ✅
+**v0.1.5** - Desktop Release Candidate ✅
 - Windows tray application
 - Smart adhkar reminders
+- Basic Adhkar mode (built-in curated list)
+- My Wird mode (user-built daily litany)
+- Wizard-style custom wird builder (/wird)
+- Full classical book library browser (Hisn al-Muslim, Wird al-Latif, Ratib al-Haddad, Dala'il al-Khayrat, Al-Adhkar)
 - Quran reader (4 surahs)
 - Beautiful Islamic UI (maroon + gold theme)
 - Windows installer (NSIS + MSI)
@@ -99,12 +103,14 @@ See **[PHASED_IMPLEMENTATION_PLAN.md](./PHASED_IMPLEMENTATION_PLAN.md)** for det
 
 ## 💡 Key Features
 
-### Current (v0.1.0)
+### Current (v0.1.5)
 ✅ Windows tray integration  
 ✅ Smart adhkar reminders  
 ✅ Beautiful Islamic UI  
 ✅ Setup wizard  
 ✅ Settings panel  
+✅ Basic vs My Wird toggle in Dhikr tab  
+✅ Wizard-style Wird Builder  
 ✅ Quran snippets (4 surahs)  
 
 ### Coming Soon (v0.2.0)
