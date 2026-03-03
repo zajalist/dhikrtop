@@ -132,7 +132,7 @@ export function DhikrSession() {
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [direction, setDirection] = useState(1);
   const [showInfo, setShowInfo] = useState(false);
-  const [completedSessions, setCompletedSessions] = useState<string[]>([]);
+  const [_completedSessions, setCompletedSessions] = useState<string[]>([]);
 
   const category = CATEGORIES[activeCategory];
   const dhikrList = category.dhikr;

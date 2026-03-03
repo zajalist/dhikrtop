@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Volume2, RefreshCw } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface FloatingNotificationProps {
   id: string;
@@ -23,6 +24,12 @@ export function FloatingNotification({
   onClose,
 }: Omit<FloatingNotificationProps, 'id'>) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/dhikr');
+    onClose();
+  };
 
   useEffect(() => {
     if (duration && duration > 0) {
@@ -152,6 +159,7 @@ export function FloatingNotification({
 
                   <div className="flex gap-2 pt-2">
                     <button
+                      onClick={handleClick}
                       className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm"
                       style={{
                         background: 'linear-gradient(135deg, #DCA048, #CF9555)',
@@ -226,6 +234,26 @@ export function NotificationCenter({ maxNotifications = 3 }: NotificationCenterP
     window.addEventListener('dhikr:notify' as any, handleNotification);
     return () => window.removeEventListener('dhikr:notify' as any, handleNotification);
   }, [maxNotifications]);
+
+  // Listen to Tauri events for idle-based notifications
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+      const { listen } = (window as any).__TAURI__.event;
+      
+      const unlisten = listen('trigger-adhkar', () => {
+        showNotification(
+          'Time for Dhikr',
+          'Your daily remembrance awaits',
+          'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+          15
+        );
+      });
+      
+      return () => {
+        unlisten.then((fn: () => void) => fn());
+      };
+    }
+  }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none">

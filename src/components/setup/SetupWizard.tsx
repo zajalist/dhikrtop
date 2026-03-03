@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BackgroundEffects } from '../shared/BackgroundEffects';
 import {
-  Moon, Sun, BookOpen, Bell, CheckCircle, Star, Sparkles,
+  Moon, Sun, BookOpen, CheckCircle, Star, Sparkles,
   ChevronRight, ChevronLeft, Heart, Clock, MapPin, Cpu, Palette, Type, MessageSquare
 } from 'lucide-react';
 
@@ -179,7 +179,7 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
 }
 
 // ── Step 0: Welcome ──────────────────────────────────────────────────────────
-function StepWelcome({ data, setData }: { data: SetupData; setData: React.Dispatch<React.SetStateAction<SetupData>> }) {
+function StepWelcome({ data: _data, setData: _setData }: { data: SetupData; setData: React.Dispatch<React.SetStateAction<SetupData>> }) {
   return (
     <div className="text-center space-y-8">
       {/* Logo */}

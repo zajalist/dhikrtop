@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { BookOpen, Brain } from 'lucide-react';
-import { BackgroundEffects } from '../shared/BackgroundEffects';
 import { QuranMemoryTest } from './QuranMemoryTest';
 import { GlowCard } from '../shared/BackgroundEffects';
 

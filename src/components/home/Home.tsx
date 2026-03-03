@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle, Info, XCircle, X, Bell, Sun, Moon, Star, Zap, TrendingUp, Award, ChevronRight } from 'lucide-react';
 import { GlowCard } from '../shared/BackgroundEffects';
-import { morningAdhkar, eveningAdhkar, afterPrayerAdhkar, getSmartReminderType, prayerTimes } from '../../data/dhikr';
+import { morningAdhkar, eveningAdhkar, getSmartReminderType, prayerTimes } from '../../data/dhikr';
 import { surahs } from '../../data/quran';
 
 interface NotifCard {
@@ -224,7 +224,7 @@ function NotificationToast({ notif, onClose }: { notif: NotifCard; onClose: () =
 
 export function Home() {
   const [notifs, setNotifs] = useState<NotifCard[]>(mockNotifs);
-  const [completedDhikr, setCompletedDhikr] = useState(2);
+  const [completedDhikr, _setCompletedDhikr] = useState(2);
   const navigate = useNavigate();
 
   const userData = (() => {

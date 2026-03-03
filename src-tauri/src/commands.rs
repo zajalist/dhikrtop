@@ -103,7 +103,7 @@ pub fn mark_setup_complete(app: AppHandle) -> Result<(), String> {
 /// Get Windows startup registry status.
 #[tauri::command]
 pub fn get_startup_status(app: AppHandle) -> Result<bool, String> {
-    #[cfg(windows)]
+    #[cfg(target_os = "windows")]
     {
         use winreg::RegKey;
         use winreg::enums::HKEY_CURRENT_USER;
@@ -123,17 +123,25 @@ pub fn get_startup_status(app: AppHandle) -> Result<bool, String> {
         }
     }
 
-    #[cfg(not(windows))]
+    #[cfg(target_os = "linux")]
     {
-        let _ = app; // Suppress unused warning on non-Windows
-        Ok(false)
+        let home = std::env::var("HOME").unwrap_or_default();
+        let autostart_path = format!("{}/.config/autostart/dhikrtop.desktop", home);
+        Ok(std::path::Path::new(&autostart_path).exists())
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        let home = std::env::var("HOME").unwrap_or_default();
+        let plist_path = format!("{}/Library/LaunchAgents/com.dhikrtop.app.plist", home);
+        Ok(std::path::Path::new(&plist_path).exists())
     }
 }
 
 /// Set Windows startup registry.
 #[tauri::command]
 pub fn set_startup(app: AppHandle, enabled: bool) -> Result<(), String> {
-    #[cfg(windows)]
+    #[cfg(target_os = "windows")]
     {
         use winreg::RegKey;
         use winreg::enums::{HKEY_CURRENT_USER, KEY_WRITE};
@@ -162,9 +170,79 @@ pub fn set_startup(app: AppHandle, enabled: bool) -> Result<(), String> {
         }
     }
 
-    #[cfg(not(windows))]
+    #[cfg(target_os = "linux")]
     {
-        let _ = (app, enabled); // Suppress unused warning on non-Windows
+        use std::fs;
+        let home = std::env::var("HOME").map_err(|_| "HOME not set")?;
+        let autostart_dir = format!("{}/.config/autostart", home);
+        let autostart_path = format!("{}/dhikrtop.desktop", autostart_dir);
+
+        if enabled {
+            // Create autostart directory if it doesn't exist
+            fs::create_dir_all(&autostart_dir)
+                .map_err(|e| format!("Failed to create autostart dir: {}", e))?;
+
+            let exe_path = std::env::current_exe()
+                .map_err(|e| format!("Failed to get exe path: {}", e))?
+                .to_string_lossy()
+                .to_string();
+
+            let desktop_entry = format!(
+                "[Desktop Entry]\nType=Application\nName=Dhikrtop\nExec={}\nIcon=dhikrtop\nComment=Islamic remembrance desktop app\nX-GNOME-Autostart-enabled=true\n",
+                exe_path
+            );
+
+            fs::write(&autostart_path, desktop_entry)
+                .map_err(|e| format!("Failed to write desktop file: {}", e))?;
+        } else {
+            let _ = fs::remove_file(&autostart_path);
+        }
+        Ok(())
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        use std::fs;
+        let home = std::env::var("HOME").map_err(|_| "HOME not set")?;
+        let launch_agents_dir = format!("{}/Library/LaunchAgents", home);
+        let plist_path = format!("{}/com.dhikrtop.app.plist", launch_agents_dir);
+
+        if enabled {
+            // Create directory if it doesn't exist
+            fs::create_dir_all(&launch_agents_dir)
+                .map_err(|e| format!("Failed to create LaunchAgents dir: {}", e))?;
+
+            let exe_path = std::env::current_exe()
+                .map_err(|e| format!("Failed to get exe path: {}", e))?
+                .to_string_lossy()
+                .to_string();
+
+            let plist_content = format!(
+                r#"<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.dhikrtop.app</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>{}</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <false/>
+</dict>
+</plist>
+"#,
+                exe_path
+            );
+
+            fs::write(&plist_path, plist_content)
+                .map_err(|e| format!("Failed to write plist: {}", e))?;
+        } else {
+            let _ = fs::remove_file(&plist_path);
+        }
         Ok(())
     }
 }
