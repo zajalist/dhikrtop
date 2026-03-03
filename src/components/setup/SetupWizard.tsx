@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { invoke } from "@tauri-apps/api/core";
-import { ChevronLeft, ChevronRight, CheckCircle, Clock } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, CheckCircle, Clock } from "lucide-react";
 import { BackgroundEffects } from "../shared/BackgroundEffects";
 import { GoalTier, getTraditionById } from "../../data/traditions";
 import { loadUserData, saveUserData } from "../../lib/userData";
@@ -65,34 +65,44 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
             <BackgroundEffects />
 
             <div className="relative z-10 h-full flex flex-col max-w-3xl mx-auto p-3 md:p-4 overflow-y-auto">
-                <div className="mb-4">
-                    <p
-                        style={{
-                            color: "#DCA048",
-                            fontSize: "0.75rem",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.15em",
-                        }}
-                    >
-                        Setup {step + 1} / 3
-                    </p>
-                    <h1
-                        className="text-white"
-                        style={{ fontWeight: 700, fontSize: "1.3rem" }}
-                    >
-                        {STEP_TITLES[step]}
-                    </h1>
-                    <div className="mt-2 h-1 rounded-full bg-white/10 overflow-hidden">
-                        <motion.div
-                            className="h-full"
+                <div className="flex items-center justify-between mb-3">
+                    <div className="flex-1">
+                        <p
                             style={{
-                                background:
-                                    "linear-gradient(90deg, #DCA048, #CF9555)",
+                                color: "#DCA048",
+                                fontSize: "0.75rem",
+                                textTransform: "uppercase",
+                                letterSpacing: "0.15em",
                             }}
-                            animate={{ width: `${((step + 1) / 3) * 100}%` }}
-                            transition={{ duration: 0.3 }}
-                        />
+                        >
+                            Setup {step + 1} / 3
+                        </p>
+                        <h1
+                            className="text-white"
+                            style={{ fontWeight: 700, fontSize: "1.3rem" }}
+                        >
+                            {STEP_TITLES[step]}
+                        </h1>
                     </div>
+                    <button
+                        onClick={() => invoke("hide_setup_window").catch(() => {})}
+                        className="ml-2 p-1 hover:bg-white/10 rounded transition"
+                        style={{ color: "#DCA048" }}
+                        title="Close"
+                    >
+                        <X size={20} />
+                    </button>
+                </div>
+                <div className="mt-2 h-1 rounded-full bg-white/10 overflow-hidden">
+                    <motion.div
+                        className="h-full"
+                        style={{
+                            background:
+                                "linear-gradient(90deg, #DCA048, #CF9555)",
+                        }}
+                        animate={{ width: `${((step + 1) / 3) * 100}%` }}
+                        transition={{ duration: 0.3 }}
+                    />
                 </div>
 
                 <div

@@ -95,6 +95,7 @@ pub fn run() {
             // Existing commands
             commands::show_adhkar,
             commands::hide_adhkar,
+            commands::hide_setup_window,
             commands::open_settings,
             commands::get_preferences,
             commands::save_preferences,

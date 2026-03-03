@@ -46,6 +46,15 @@ pub fn hide_adhkar(window: WebviewWindow) -> Result<(), String> {
     window.hide().map_err(|e| e.to_string())
 }
 
+/// Hide the setup window.
+#[tauri::command]
+pub fn hide_setup_window(app: AppHandle) -> Result<(), String> {
+    let window = app
+        .get_webview_window("setup")
+        .ok_or("setup window not found")?;
+    window.hide().map_err(|e| e.to_string())
+}
+
 /// Open the settings window.
 #[tauri::command]
 pub fn open_settings(app: AppHandle) -> Result<(), String> {
