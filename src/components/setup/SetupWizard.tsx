@@ -59,12 +59,12 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
 
     return (
         <div
-            className="fixed inset-0 overflow-hidden"
+            className="fixed inset-0 overflow-y-auto"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
         >
             <BackgroundEffects />
 
-            <div className="relative z-10 h-full flex flex-col max-w-3xl mx-auto p-4 md:p-6">
+            <div className="relative z-10 min-h-full flex flex-col max-w-3xl mx-auto p-4 md:p-6">
                 <div className="mb-4">
                     <p
                         style={{
