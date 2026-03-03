@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
+import { invoke } from "@tauri-apps/api/core";
 import { ChevronLeft, ChevronRight, CheckCircle, Clock } from "lucide-react";
 import { BackgroundEffects } from "../shared/BackgroundEffects";
 import { GoalTier, getTraditionById } from "../../data/traditions";
@@ -39,7 +40,7 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
 
     const tradition = getTraditionById(traditionId);
 
-    const completeSetup = () => {
+    const completeSetup = async () => {
         saveUserData({
             name,
             traditionId,
@@ -47,6 +48,12 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
             reminderWindows: windows,
         });
         localStorage.setItem("dhikr_setup_complete", "true");
+        // Mark setup complete in Tauri store so Rust knows not to show setup on next launch
+        try {
+            await invoke("mark_setup_complete");
+        } catch (err) {
+            console.warn("Failed to mark setup complete in Tauri:", err);
+        }
         onComplete();
     };
 
