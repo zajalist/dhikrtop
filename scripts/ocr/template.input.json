@@ -1,0 +1,17 @@
+[
+  {
+    "traditionId": "classical_nawawi",
+    "bookTitle": "Al-Adhkar",
+    "sectionTitle": "Morning Remembrances",
+    "category": "morning",
+    "items": [
+      {
+        "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ",
+        "transliteration": "Allahumma inni asaluka al-afwa wa al-afiyah",
+        "translation": "O Allah, I ask You for pardon and well-being.",
+        "targetCount": 3,
+        "source": "Al-Adhkar"
+      }
+    ]
+  }
+]

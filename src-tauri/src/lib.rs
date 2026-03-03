@@ -1,8 +1,86 @@
+// Audio recording is optional on Linux because it requires system deps (e.g., ALSA dev libs).
+// Enable with: `cargo build --features audio` or `cargo tauri dev --features audio`
+#[cfg(feature = "audio")]
+pub mod audio;
+
+// Stub audio module when feature is disabled (keeps compilation working)
+#[cfg(not(feature = "audio"))]
+pub mod audio {
+    use std::path::Path;
+    use thiserror::Error;
+
+    #[derive(Error, Debug, Clone)]
+    pub enum AudioError {
+        #[error("Audio feature is disabled. Rebuild with `--features audio`.")]
+        AudioFeatureDisabled,
+    }
+
+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+    pub enum RecordingState {
+        Idle,
+        Recording,
+        Paused,
+        Stopped,
+    }
+
+    pub struct Recorder;
+
+    impl Recorder {
+        pub fn new() -> Result<Self, AudioError> {
+            Err(AudioError::AudioFeatureDisabled)
+        }
+
+        pub fn list_devices(&self) -> Result<Vec<String>, AudioError> {
+            Err(AudioError::AudioFeatureDisabled)
+        }
+
+        pub fn supported_configs(&self) -> Result<Vec<String>, AudioError> {
+            Err(AudioError::AudioFeatureDisabled)
+        }
+
+        pub fn start_recording(&mut self) -> Result<(), AudioError> {
+            Err(AudioError::AudioFeatureDisabled)
+        }
+
+        pub fn pause_recording(&mut self) -> Result<(), AudioError> {
+            Err(AudioError::AudioFeatureDisabled)
+        }
+
+        pub fn resume_recording(&mut self) -> Result<(), AudioError> {
+            Err(AudioError::AudioFeatureDisabled)
+        }
+
+        pub fn stop_recording(&mut self) -> Result<(), AudioError> {
+            Err(AudioError::AudioFeatureDisabled)
+        }
+
+        pub fn save_recording<P: AsRef<Path>>(&self, _output_path: P) -> Result<u32, AudioError> {
+            Err(AudioError::AudioFeatureDisabled)
+        }
+
+        pub fn state(&self) -> RecordingState {
+            RecordingState::Idle
+        }
+
+        pub fn get_duration_ms(&self) -> u32 {
+            0
+        }
+
+        pub fn get_sample_count(&self) -> usize {
+            0
+        }
+    }
+}
 mod commands;
+pub mod db;
 mod idle;
+pub mod schema;
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod command_tests;
 
 use tauri::{
     menu::{Menu, MenuItem, PredefinedMenuItem},
@@ -13,6 +91,44 @@ use tauri::{
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::default().build())
+        .invoke_handler(tauri::generate_handler![
+            // Existing commands
+            commands::show_adhkar,
+            commands::hide_adhkar,
+            commands::open_settings,
+            commands::get_preferences,
+            commands::save_preferences,
+            commands::is_first_install,
+            commands::mark_setup_complete,
+            commands::get_startup_status,
+            commands::set_startup,
+            // Database commands
+            commands::db_init,
+            commands::db_save_user,
+            commands::db_get_user,
+            commands::db_save_adhkar_progress,
+            commands::db_get_adhkar_progress,
+            // Daily calendar-based progress
+            commands::db_increment_daily_adhkar,
+            commands::db_set_daily_adhkar_count,
+            commands::db_get_daily_adhkar_progress,
+            commands::db_save_app_settings,
+            commands::db_get_app_settings,
+            commands::db_save_quran_progress,
+            commands::db_get_quran_progress,
+            commands::db_save_voice_recording,
+            commands::db_get_voice_recordings,
+            commands::db_get_verse_recordings,
+            commands::db_delete_voice_recording,
+            commands::db_export_user_data,
+            commands::db_reset_user_data,
+            // Notifications
+            commands::db_add_notification,
+            commands::db_get_recent_notifications,
+            commands::db_mark_notification_read,
+            commands::db_dismiss_notification,
+            commands::db_clear_notifications,
+        ])
         .setup(|app| {
             // ── Ensure GTK initialization on Linux ──────────────────────────
             #[cfg(target_os = "linux")]
@@ -21,9 +137,8 @@ pub fn run() {
             }
 
             // ── Check if first install and show setup ────────────────────────
-            let store = tauri_plugin_store::StoreBuilder::new(app, "app-state.json")
-                .build()?;
-            
+            let store = tauri_plugin_store::StoreBuilder::new(app, "app-state.json").build()?;
+
             let is_first_install = !store
                 .get("setupCompleted")
                 .and_then(|v| v.as_bool())
@@ -75,8 +190,12 @@ pub fn run() {
                                     let w = 460.0_f64;
                                     let h = 420.0_f64;
                                     let x = ((screen.width as f64 / scale) - w) / 2.0;
-                                    let _ = window.set_position(tauri::LogicalPosition { x, y: 0.0 });
-                                    let _ = window.set_size(tauri::LogicalSize { width: w as u32, height: h as u32 });
+                                    let _ =
+                                        window.set_position(tauri::LogicalPosition { x, y: 0.0 });
+                                    let _ = window.set_size(tauri::LogicalSize {
+                                        width: w as u32,
+                                        height: h as u32,
+                                    });
                                 }
                                 let _ = window.show();
                                 let _ = app.emit("trigger-adhkar", ());
@@ -103,17 +222,6 @@ pub fn run() {
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![
-            commands::show_adhkar,
-            commands::hide_adhkar,
-            commands::open_settings,
-            commands::get_preferences,
-            commands::save_preferences,
-            commands::is_first_install,
-            commands::mark_setup_complete,
-            commands::get_startup_status,
-            commands::set_startup,
-        ])
         .run(tauri::generate_context!())
         .expect("error while running dhikrtop");
 }

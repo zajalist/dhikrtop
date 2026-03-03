@@ -1,7 +1,5 @@
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     #[test]
     fn test_show_adhkar_returns_ok() {
         // This would require mocking the AppHandle
