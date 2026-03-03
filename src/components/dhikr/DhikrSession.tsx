@@ -784,7 +784,7 @@ export function DhikrSession() {
                     </button>
                 </div>
 
-                <div className="flex gap-2 overflow-x-auto pb-1">
+                <div className="flex gap-2 flex-wrap pb-1">
                     {categories.map((cat, i) => {
                         const done = cat.dhikr.every(
                             (d) => (counts[d.id] ?? 0) >= d.targetCount,
@@ -797,7 +797,7 @@ export function DhikrSession() {
                                     setCurrentIndex(0);
                                     setShowInfo(false);
                                 }}
-                                className="flex items-center gap-2 px-4 py-2 rounded-xl whitespace-nowrap transition-all flex-shrink-0"
+                                className="flex items-center gap-2 px-3 py-2 rounded-xl whitespace-nowrap transition-all"
                                 style={{
                                     background:
                                         activeCategory === i
@@ -808,7 +808,7 @@ export function DhikrSession() {
                                         activeCategory === i
                                             ? "white"
                                             : "rgba(215,194,159,0.5)",
-                                    fontSize: "0.85rem",
+                                    fontSize: "0.8rem",
                                 }}
                             >
                                 <cat.Icon
@@ -833,7 +833,7 @@ export function DhikrSession() {
                 </div>
 
                 {dhikrMode === "custom" && sectionOptions.length > 0 && (
-                    <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+                    <div className="mt-3 flex gap-2 flex-wrap pb-1">
                         <button
                             onClick={() => setActiveSectionId("all")}
                             className="px-3 py-1.5 rounded-lg whitespace-nowrap"

@@ -5,7 +5,7 @@ use crate::db::{
 use serde_json::Value;
 use std::sync::Mutex;
 use std::time::{SystemTime, UNIX_EPOCH};
-use tauri::{AppHandle, Manager, WebviewWindow};
+use tauri::{AppHandle, Emitter, Manager, WebviewWindow};
 use uuid::Uuid;
 
 // Global database instance (lazy initialized)
@@ -13,27 +13,42 @@ lazy_static::lazy_static! {
     static ref DB_INSTANCE: Mutex<Option<Database>> = Mutex::new(None);
 }
 
-/// Show the adhkar popup, positioned at top-center of primary screen.
+/// Show the adhkar popup, positioned using saved popup preference.
 #[tauri::command]
 pub fn show_adhkar(app: AppHandle) -> Result<(), String> {
     let window = app
         .get_webview_window("adhkar")
         .ok_or("adhkar window not found")?;
 
-    // Position at top-center
-    if let Ok(Some(monitor)) = window.primary_monitor() {
-        let screen_size = monitor.size();
-        let scale = monitor.scale_factor();
-        let w = 460.0_f64;
-        let h = 420.0_f64;
-        let x = ((screen_size.width as f64 / scale) - w) / 2.0;
+    let prefs_store = tauri_plugin_store::StoreBuilder::new(&app, "preferences.json")
+        .build()
+        .ok();
+    let popup_position = prefs_store
+        .as_ref()
+        .and_then(|s| s.get("preferences"))
+        .and_then(|p| p.get("popupPosition").and_then(|v| v.as_str()).map(str::to_string))
+        .unwrap_or_else(|| "top-left".to_string());
 
-        let _ = window.set_position(tauri::LogicalPosition { x, y: 0.0 });
-        let _ = window.set_size(tauri::LogicalSize {
-            width: w as u32,
-            height: h as u32,
-        });
-    }
+    let w = 460.0_f64;
+    let h = 620.0_f64;
+    let x = if let Ok(Some(monitor)) = window.primary_monitor() {
+        let screen = monitor.size();
+        let scale = monitor.scale_factor();
+        let screen_w = screen.width as f64 / scale;
+        match popup_position.as_str() {
+            "top-center" => ((screen_w - w) / 2.0).max(0.0),
+            "top-right" => (screen_w - w - 16.0).max(0.0),
+            _ => 16.0,
+        }
+    } else {
+        16.0
+    };
+
+    let _ = window.set_position(tauri::LogicalPosition { x, y: 0.0 });
+    let _ = window.set_size(tauri::LogicalSize {
+        width: w as u32,
+        height: h as u32,
+    });
 
     window.show().map_err(|e| e.to_string())?;
     // Don't steal focus for the peek notification
@@ -78,7 +93,11 @@ pub fn get_preferences(app: AppHandle) -> Result<serde_json::Value, String> {
         "minIntervalSec": 600,
         "categories": ["morning", "evening", "general", "sleep"],
         "language": "all",
-        "enabled": true
+        "enabled": true,
+        "uiScale": 1.0,
+        "popupPosition": "top-left",
+        "reduceMotion": false,
+        "openExpanded": true
     }));
 
     Ok(prefs)
@@ -93,6 +112,7 @@ pub fn save_preferences(app: AppHandle, preferences: serde_json::Value) -> Resul
 
     store.set("preferences", preferences);
     store.save().map_err(|e| e.to_string())?;
+    let _ = app.emit("preferences-updated", ());
     Ok(())
 }
 

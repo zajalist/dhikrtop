@@ -12,9 +12,11 @@ export default function AdhkarWindow() {
   const [adhkar, setAdhkar] = useState<Adhkar>(() => pickRandom(DEFAULT_PREFERENCES.categories));
   const [prefs, setPrefs] = useState<Preferences>(DEFAULT_PREFERENCES);
   const [phase, setPhase] = useState<Phase>('hidden');
+  const [summon, setSummon] = useState(false);
   const [progress, setProgress] = useState(100);
   const startRef = useRef(Date.now());
   const rafRef = useRef<number | undefined>(undefined);
+  const summonTimerRef = useRef<number | undefined>(undefined);
   const autoDismissSec = 30;
 
   useEffect(() => {
@@ -30,10 +32,20 @@ export default function AdhkarWindow() {
         setPrefs(p);
         const newAdhkar = pickRandom(p.categories);
         setAdhkar(newAdhkar);
-        setPhase('peek');
+        setPhase(p.openExpanded ? 'expanded' : 'peek');
+        if (!p.reduceMotion) {
+          setSummon(true);
+          if (summonTimerRef.current) window.clearTimeout(summonTimerRef.current);
+          summonTimerRef.current = window.setTimeout(() => setSummon(false), 900);
+        } else {
+          setSummon(false);
+        }
       });
     });
-    return () => { unlisten.then((fn) => fn()); };
+    return () => {
+      if (summonTimerRef.current) window.clearTimeout(summonTimerRef.current);
+      unlisten.then((fn) => fn());
+    };
   }, []);
 
   // Phase state machine
@@ -53,6 +65,10 @@ export default function AdhkarWindow() {
 
   // Auto-dismiss countdown
   useEffect(() => {
+    if (prefs.openExpanded && phase === 'expanded') {
+      return;
+    }
+
     if (phase !== 'expanded') {
       if (phase === 'peek' || phase === 'jiggle') {
         const t = setTimeout(() => dismiss(), 60000);
@@ -131,13 +147,6 @@ export default function AdhkarWindow() {
     startRef.current = Date.now();
   }, [prefs.categories]);
 
-  useEffect(() => {
-    const t = setTimeout(() => {
-      if (phase === 'hidden') setPhase('peek');
-    }, 100);
-    return () => clearTimeout(t);
-  }, []);
-
   const categoryLabel = adhkar.category === 'morning' ? 'ADHKAR AS-SABAH'
     : adhkar.category === 'evening' ? 'ADHKAR AL-MASA\''
     : adhkar.category === 'sleep' ? 'ADHKAR AN-NAWM'
@@ -147,7 +156,7 @@ export default function AdhkarWindow() {
 
   return (
     <div
-      className={`adhkar-root ${phaseClass}`}
+      className={`adhkar-root ${phaseClass}${summon ? ' summon' : ''}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
@@ -180,6 +189,11 @@ export default function AdhkarWindow() {
 
         {/* Top ornament */}
         <div className="card-ornament-top" aria-hidden="true">✦</div>
+
+        <div className="card-brand">
+          <span className="brand-mark">ذ</span>
+          <span className="brand-name">dhikr top</span>
+        </div>
 
         {/* Header */}
         <div className="card-header">

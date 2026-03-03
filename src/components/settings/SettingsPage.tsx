@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { invoke } from "@tauri-apps/api/core";
 import { User, CheckCircle, Settings2, Wand2, Trash2 } from "lucide-react";
 import { loadUserData, saveUserData } from "../../lib/userData";
+import { getPreferences, savePreferences } from "../../lib/store";
+import { DEFAULT_PREFERENCES, type Preferences } from "../../lib/types";
 
 const FONT_SIZES = [
     { id: "small", label: "Small" },
@@ -52,6 +54,7 @@ export function SettingsPage() {
     const initial = useMemo(() => loadUserData(), []);
     const navigate = useNavigate();
     const [saved, setSaved] = useState(false);
+    const [prefs, setPrefs] = useState<Preferences>(DEFAULT_PREFERENCES);
 
     // Profile
     const [name, setName] = useState(initial.name);
@@ -83,9 +86,13 @@ export function SettingsPage() {
         } catch {
             /* ignore */
         }
+
+        getPreferences()
+            .then((p) => setPrefs({ ...DEFAULT_PREFERENCES, ...p }))
+            .catch(() => setPrefs(DEFAULT_PREFERENCES));
     }, []);
 
-    const save = () => {
+    const save = async () => {
         saveUserData({
             name,
             showTransliteration,
@@ -94,6 +101,7 @@ export function SettingsPage() {
             dhikrMode,
             pinnedWirdId: dhikrMode === "custom" ? pinnedWirdId : null,
         });
+        await savePreferences(prefs);
         setSaved(true);
         setTimeout(() => setSaved(false), 1800);
     };
@@ -349,6 +357,127 @@ export function SettingsPage() {
                         ))}
                     </div>
                 </div>
+
+                <div className="space-y-2">
+                    <p
+                        style={{
+                            color: "rgba(215,194,159,0.6)",
+                            fontSize: "0.78rem",
+                            marginBottom: 8,
+                        }}
+                    >
+                        UI Scale ({Math.round(prefs.uiScale * 100)}%)
+                    </p>
+                    <input
+                        type="range"
+                        min={80}
+                        max={130}
+                        step={5}
+                        value={Math.round(prefs.uiScale * 100)}
+                        onChange={(e) =>
+                            setPrefs((prev) => ({
+                                ...prev,
+                                uiScale: Number(e.target.value) / 100,
+                            }))
+                        }
+                        style={{ width: "100%" }}
+                    />
+                </div>
+
+                <div>
+                    <p
+                        style={{
+                            color: "rgba(215,194,159,0.6)",
+                            fontSize: "0.78rem",
+                            marginBottom: 8,
+                        }}
+                    >
+                        Popup Position
+                    </p>
+                    <div className="flex gap-2">
+                        {([
+                            ["top-left", "Top Left"],
+                            ["top-center", "Top Center"],
+                            ["top-right", "Top Right"],
+                        ] as const).map(([id, label]) => (
+                            <button
+                                key={id}
+                                onClick={() =>
+                                    setPrefs((prev) => ({
+                                        ...prev,
+                                        popupPosition: id,
+                                    }))
+                                }
+                                className="px-3 py-2 rounded-xl flex-1"
+                                style={{
+                                    background:
+                                        prefs.popupPosition === id
+                                            ? "rgba(220,160,72,0.22)"
+                                            : "rgba(255,255,255,0.05)",
+                                    border: `1px solid ${prefs.popupPosition === id ? "rgba(220,160,72,0.5)" : "rgba(255,255,255,0.1)"}`,
+                                    color: "white",
+                                    fontSize: "0.78rem",
+                                }}
+                            >
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <label
+                    className="flex items-center justify-between rounded-xl px-3 py-2.5"
+                    style={{
+                        background: "rgba(255,255,255,0.05)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                    }}
+                >
+                    <div>
+                        <p style={{ color: "white", fontSize: "0.88rem" }}>
+                            Open Popup Expanded
+                        </p>
+                        <p style={{ color: "#D7C29F", fontSize: "0.72rem" }}>
+                            Keeps popup active without requiring hover
+                        </p>
+                    </div>
+                    <input
+                        type="checkbox"
+                        checked={prefs.openExpanded}
+                        onChange={(e) =>
+                            setPrefs((prev) => ({
+                                ...prev,
+                                openExpanded: e.target.checked,
+                            }))
+                        }
+                    />
+                </label>
+
+                <label
+                    className="flex items-center justify-between rounded-xl px-3 py-2.5"
+                    style={{
+                        background: "rgba(255,255,255,0.05)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                    }}
+                >
+                    <div>
+                        <p style={{ color: "white", fontSize: "0.88rem" }}>
+                            Reduce Motion
+                        </p>
+                        <p style={{ color: "#D7C29F", fontSize: "0.72rem" }}>
+                            Softer animations for accessibility
+                        </p>
+                    </div>
+                    <input
+                        type="checkbox"
+                        checked={prefs.reduceMotion}
+                        onChange={(e) =>
+                            setPrefs((prev) => ({
+                                ...prev,
+                                reduceMotion: e.target.checked,
+                            }))
+                        }
+                    />
+                </label>
             </SettingsCard>
 
             {/* Danger Zone */}

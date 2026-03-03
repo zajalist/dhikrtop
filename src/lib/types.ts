@@ -16,6 +16,10 @@ export interface Preferences {
   /** 'all' | 'arabic' | 'english' */
   language: 'all' | 'arabic' | 'english';
   enabled: boolean;
+  uiScale: number;
+  popupPosition: 'top-left' | 'top-center' | 'top-right';
+  reduceMotion: boolean;
+  openExpanded: boolean;
 }
 
 export const DEFAULT_PREFERENCES: Preferences = {
@@ -24,4 +28,8 @@ export const DEFAULT_PREFERENCES: Preferences = {
   categories: ['morning', 'evening', 'general', 'sleep'],
   language: 'all',
   enabled: true,
+  uiScale: 1,
+  popupPosition: 'top-left',
+  reduceMotion: false,
+  openExpanded: true,
 };

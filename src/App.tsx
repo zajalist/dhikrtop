@@ -1,14 +1,38 @@
 import { useState, useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
+import { listen } from '@tauri-apps/api/event';
 import { router } from './routes';
 import { SetupWizard } from './components/setup/SetupWizard';
+import { getPreferences } from './lib/store';
 
 export default function App() {
   const [setupDone, setSetupDone] = useState<boolean | null>(null);
+  const [uiScale, setUiScale] = useState(1);
 
   useEffect(() => {
     const done = localStorage.getItem('dhikr_setup_complete') === 'true';
     setSetupDone(done);
+  }, []);
+
+  useEffect(() => {
+    const applyScale = async () => {
+      try {
+        const prefs = await getPreferences();
+        const scale = Number.isFinite(prefs.uiScale) ? prefs.uiScale : 1;
+        setUiScale(Math.min(1.35, Math.max(0.8, scale)));
+      } catch {
+        setUiScale(1);
+      }
+    };
+
+    applyScale();
+    const unlisten = listen('preferences-updated', () => {
+      applyScale();
+    });
+
+    return () => {
+      unlisten.then((fn) => fn()).catch(() => {});
+    };
   }, []);
 
   // Loading state while checking localStorage
@@ -34,8 +58,16 @@ export default function App() {
   }
 
   if (!setupDone) {
-    return <SetupWizard onComplete={() => setSetupDone(true)} />;
+    return (
+      <div style={{ zoom: uiScale }}>
+        <SetupWizard onComplete={() => setSetupDone(true)} />
+      </div>
+    );
   }
 
-  return <RouterProvider router={router} />;
+  return (
+    <div style={{ zoom: uiScale }}>
+      <RouterProvider router={router} />
+    </div>
+  );
 }

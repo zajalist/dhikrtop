@@ -11,7 +11,11 @@ type Action =
   | { type: 'SET_IDLE'; value: number }
   | { type: 'SET_INTERVAL'; value: number }
   | { type: 'TOGGLE_CATEGORY'; cat: Adhkar['category'] }
-  | { type: 'SET_LANGUAGE'; lang: Preferences['language'] };
+  | { type: 'SET_LANGUAGE'; lang: Preferences['language'] }
+  | { type: 'SET_SCALE'; value: number }
+  | { type: 'SET_POPUP_POS'; value: Preferences['popupPosition'] }
+  | { type: 'SET_REDUCE_MOTION'; value: boolean }
+  | { type: 'SET_OPEN_EXPANDED'; value: boolean };
 
 function reducer(state: Preferences, action: Action): Preferences {
   switch (action.type) {
@@ -27,6 +31,10 @@ function reducer(state: Preferences, action: Action): Preferences {
       return { ...state, categories: cats.length > 0 ? cats : state.categories };
     }
     case 'SET_LANGUAGE': return { ...state, language: action.lang };
+    case 'SET_SCALE': return { ...state, uiScale: action.value };
+    case 'SET_POPUP_POS': return { ...state, popupPosition: action.value };
+    case 'SET_REDUCE_MOTION': return { ...state, reduceMotion: action.value };
+    case 'SET_OPEN_EXPANDED': return { ...state, openExpanded: action.value };
     default: return state;
   }
 }
@@ -63,6 +71,10 @@ export default function SettingsWindow() {
     categories: ['morning', 'evening', 'general', 'sleep'],
     language: 'all',
     enabled: true,
+    uiScale: 1,
+    popupPosition: 'top-left',
+    reduceMotion: false,
+    openExpanded: true,
   });
   const [saved, setSaved] = useState(false);
 
@@ -85,7 +97,7 @@ export default function SettingsWindow() {
   ];
 
   return (
-    <div className={styles.root}>
+    <div className={styles.root} style={{ zoom: prefs.uiScale }}>
       {/* Sidebar */}
       <nav className={styles.sidebar}>
         <div className={styles.sidebarLogo}>
@@ -191,6 +203,46 @@ export default function SettingsWindow() {
                   </label>
                 ))}
               </div>
+            </Field>
+
+            <Field label="UI Scale" hint="Scale app UI for readability and fit">
+              <input
+                type="range"
+                min={80}
+                max={130}
+                step={5}
+                value={Math.round(prefs.uiScale * 100)}
+                onChange={(e) => dispatch({ type: 'SET_SCALE', value: +e.target.value / 100 })}
+                style={{ width: '100%' }}
+              />
+            </Field>
+
+            <Field label="Popup position" hint="Choose where the adhkar popup appears">
+              <select
+                className={styles.select}
+                value={prefs.popupPosition}
+                onChange={(e) => dispatch({ type: 'SET_POPUP_POS', value: e.target.value as Preferences['popupPosition'] })}
+              >
+                <option value="top-left">Top Left</option>
+                <option value="top-center">Top Center</option>
+                <option value="top-right">Top Right</option>
+              </select>
+            </Field>
+
+            <Field label="Open expanded" hint="Keep popup active without hover">
+              <input
+                type="checkbox"
+                checked={prefs.openExpanded}
+                onChange={(e) => dispatch({ type: 'SET_OPEN_EXPANDED', value: e.target.checked })}
+              />
+            </Field>
+
+            <Field label="Reduce motion" hint="Use subtler animation transitions">
+              <input
+                type="checkbox"
+                checked={prefs.reduceMotion}
+                onChange={(e) => dispatch({ type: 'SET_REDUCE_MOTION', value: e.target.checked })}
+              />
             </Field>
           </Section>
         )}

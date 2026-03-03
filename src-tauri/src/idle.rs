@@ -25,19 +25,36 @@ pub fn start(app: AppHandle) {
             let idle = system_idle_time();
             if idle >= idle_threshold {
                 let _ = app.emit("trigger-adhkar", ());
-                // Show window positioned at top-center
+                // Show window positioned using saved popup preference
                 let app2 = app.clone();
                 std::thread::spawn(move || {
                     if let Some(window) = app2.get_webview_window("adhkar") {
-                        if let Ok(Some(monitor)) = window.primary_monitor() {
+                        let prefs_store = tauri_plugin_store::StoreBuilder::new(&app2, "preferences.json")
+                            .build()
+                            .ok();
+                        let popup_position = prefs_store
+                            .as_ref()
+                            .and_then(|s| s.get("preferences"))
+                            .and_then(|p| p.get("popupPosition").and_then(|v| v.as_str()).map(str::to_string))
+                            .unwrap_or_else(|| "top-left".to_string());
+
+                        let w = 460.0_f64;
+                        let h = 620.0_f64;
+                        let x = if let Ok(Some(monitor)) = window.primary_monitor() {
                             let screen = monitor.size();
                             let scale = monitor.scale_factor();
-                            let w = 460.0_f64;
-                            let h = 420.0_f64;
-                            let x = ((screen.width as f64 / scale) - w) / 2.0;
-                            let _ = window.set_position(tauri::LogicalPosition { x, y: 0.0 });
-                            let _ = window.set_size(tauri::LogicalSize { width: w as u32, height: h as u32 });
-                        }
+                            let screen_w = screen.width as f64 / scale;
+                            match popup_position.as_str() {
+                                "top-center" => ((screen_w - w) / 2.0).max(0.0),
+                                "top-right" => (screen_w - w - 16.0).max(0.0),
+                                _ => 16.0,
+                            }
+                        } else {
+                            16.0
+                        };
+
+                        let _ = window.set_position(tauri::LogicalPosition { x, y: 0.0 });
+                        let _ = window.set_size(tauri::LogicalSize { width: w as u32, height: h as u32 });
                         let _ = window.show();
                         // Don't steal focus — the peek should be non-intrusive
                     }

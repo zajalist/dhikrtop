@@ -12,11 +12,6 @@
     "security": {
       "csp": null
     },
-    "trayIcon": {
-      "iconPath": "icons/tray.png",
-      "iconAsTemplate": true,
-      "menuOnLeftClick": false
-    },
     "windows": [
       {
         "label": "setup",
@@ -38,7 +33,7 @@
         "title": "Dhikrtop",
         "url": "/",
         "width": 460,
-        "height": 420,
+        "height": 620,
         "resizable": false,
         "decorations": false,
         "transparent": true,
@@ -47,7 +42,7 @@
         "skipTaskbar": true,
         "shadow": false,
         "focus": false,
-        "x": 0,
+        "x": 16,
         "y": 0
       },
       {

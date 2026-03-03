@@ -192,6 +192,38 @@ export function RootLayout() {
 
             {/* Main content */}
             <main className="flex-1 flex flex-col overflow-hidden relative z-10">
+                <header
+                    className="px-4 md:px-6 py-3 border-b"
+                    style={{
+                        borderColor: "rgba(220,160,72,0.15)",
+                        background: "rgba(10,1,5,0.55)",
+                        backdropFilter: "blur(10px)",
+                    }}
+                >
+                    <div className="flex items-center gap-2">
+                        <span
+                            style={{
+                                fontFamily: "Amiri, serif",
+                                color: "#DCA048",
+                                fontSize: "1.25rem",
+                                lineHeight: 1,
+                            }}
+                        >
+                            ذ
+                        </span>
+                        <span
+                            style={{
+                                color: "#F6E6CE",
+                                fontWeight: 700,
+                                fontSize: "0.95rem",
+                                letterSpacing: "0.08em",
+                                textTransform: "lowercase",
+                            }}
+                        >
+                            dhikr top
+                        </span>
+                    </div>
+                </header>
                 <div className="flex-1 overflow-y-auto pb-20 md:pb-6">
                     <Outlet />
                 </div>

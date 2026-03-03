@@ -87,10 +87,58 @@ use tauri::{
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     Emitter, Manager,
 };
+use tauri_plugin_global_shortcut::{GlobalShortcutExt, ShortcutState};
+
+fn show_adhkar_left(app: &tauri::AppHandle) {
+    if let Some(window) = app.get_webview_window("adhkar") {
+        let w = 460.0_f64;
+        let h = 620.0_f64;
+        let prefs_store = tauri_plugin_store::StoreBuilder::new(app, "preferences.json")
+            .build()
+            .ok();
+        let popup_position = prefs_store
+            .as_ref()
+            .and_then(|s| s.get("preferences"))
+            .and_then(|p| p.get("popupPosition").and_then(|v| v.as_str()).map(str::to_string))
+            .unwrap_or_else(|| "top-left".to_string());
+
+        let x = if let Ok(Some(monitor)) = window.primary_monitor() {
+            let screen = monitor.size();
+            let scale = monitor.scale_factor();
+            let screen_w = screen.width as f64 / scale;
+            match popup_position.as_str() {
+                "top-center" => ((screen_w - w) / 2.0).max(0.0),
+                "top-right" => (screen_w - w - 16.0).max(0.0),
+                _ => 16.0,
+            }
+        } else {
+            16.0
+        };
+        let y = 0.0_f64;
+        let _ = window.set_position(tauri::LogicalPosition { x, y });
+        let _ = window.set_size(tauri::LogicalSize {
+            width: w as u32,
+            height: h as u32,
+        });
+        let _ = window.show();
+        let _ = app.emit("trigger-adhkar", ());
+    }
+}
+
+fn toggle_adhkar_left(app: &tauri::AppHandle) {
+    if let Some(window) = app.get_webview_window("adhkar") {
+        if window.is_visible().unwrap_or(false) {
+            let _ = window.hide();
+        } else {
+            show_adhkar_left(app);
+        }
+    }
+}
 
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::default().build())
+        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .invoke_handler(tauri::generate_handler![
             // Existing commands
             commands::show_adhkar,
@@ -184,28 +232,7 @@ pub fn run() {
                     } = event
                     {
                         let app = tray.app_handle();
-                        if let Some(window) = app.get_webview_window("adhkar") {
-                            if window.is_visible().unwrap_or(false) {
-                                let _ = window.hide();
-                            } else {
-                                // Position at top-center
-                                if let Ok(Some(monitor)) = window.primary_monitor() {
-                                    let screen = monitor.size();
-                                    let scale = monitor.scale_factor();
-                                    let w = 460.0_f64;
-                                    let h = 420.0_f64;
-                                    let x = ((screen.width as f64 / scale) - w) / 2.0;
-                                    let _ =
-                                        window.set_position(tauri::LogicalPosition { x, y: 0.0 });
-                                    let _ = window.set_size(tauri::LogicalSize {
-                                        width: w as u32,
-                                        height: h as u32,
-                                    });
-                                }
-                                let _ = window.show();
-                                let _ = app.emit("trigger-adhkar", ());
-                            }
-                        }
+                        toggle_adhkar_left(&app);
                     }
                 })
                 .on_menu_event(|app, event| match event.id.as_ref() {
@@ -221,6 +248,15 @@ pub fn run() {
                     _ => {}
                 })
                 .build(app)?;
+
+            // ── Global Shortcut (Windows + Shift + D) ─────────────────────
+            let _ = app
+                .global_shortcut()
+                .on_shortcut("Shift+Super+D", move |app, _shortcut, event| {
+                    if event.state == ShortcutState::Pressed {
+                        toggle_adhkar_left(app);
+                    }
+                });
 
             // ── Idle Monitor ───────────────────────────────────────────────
             idle::start(app.handle().clone());

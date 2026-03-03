@@ -268,6 +268,18 @@ impl Database {
     ) -> Result<AdhkarDailyProgress, DbError> {
         let now = Self::now();
 
+        // Ensure the user exists to satisfy FK constraints on adhkar_daily_progress.
+        sqlx::query(
+            "INSERT OR IGNORE INTO users (id, name, language, created_at, updated_at)
+             VALUES (?, ?, 'en', ?, ?)",
+        )
+        .bind(user_id)
+        .bind(user_id)
+        .bind(now)
+        .bind(now)
+        .execute(&self.pool)
+        .await?;
+
         // Execute the INSERT/UPDATE
         sqlx::query(
             "INSERT INTO adhkar_daily_progress (user_id, day_key, adhkar_id, count, target_count, completed_at, last_tapped_at, created_at, updated_at)
@@ -323,6 +335,18 @@ impl Database {
         count: i32,
     ) -> Result<AdhkarDailyProgress, DbError> {
         let now = Self::now();
+
+        // Ensure the user exists to satisfy FK constraints on adhkar_daily_progress.
+        sqlx::query(
+            "INSERT OR IGNORE INTO users (id, name, language, created_at, updated_at)
+             VALUES (?, ?, 'en', ?, ?)",
+        )
+        .bind(user_id)
+        .bind(user_id)
+        .bind(now)
+        .bind(now)
+        .execute(&self.pool)
+        .await?;
 
         // Execute the INSERT/UPDATE
         sqlx::query(
