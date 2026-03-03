@@ -123,6 +123,39 @@ pub fn mark_setup_complete(app: AppHandle) -> Result<(), String> {
     Ok(())
 }
 
+/// Reset all data and restart setup wizard.
+#[tauri::command]
+pub fn reset_all_data(app: AppHandle) -> Result<(), String> {
+    // Clear app state
+    let app_state_store = tauri_plugin_store::StoreBuilder::new(&app, "app-state.json")
+        .build()
+        .map_err(|e| e.to_string())?;
+    app_state_store.clear();
+    app_state_store.save().map_err(|e| e.to_string())?;
+
+    // Clear preferences
+    let prefs_store = tauri_plugin_store::StoreBuilder::new(&app, "preferences.json")
+        .build()
+        .map_err(|e| e.to_string())?;
+    prefs_store.clear();
+    prefs_store.save().map_err(|e| e.to_string())?;
+
+    // Hide settings window
+    if let Some(settings_window) = app.get_webview_window("settings") {
+        let _ = settings_window.hide();
+    }
+
+    // Show setup window at top-left corner
+    if let Some(setup_window) = app.get_webview_window("setup") {
+        let _ = setup_window.set_position(tauri::LogicalPosition { x: 0.0, y: 0.0 });
+        let _ = setup_window.set_size(tauri::LogicalSize { width: 380, height: 900 });
+        let _ = setup_window.show();
+        let _ = setup_window.set_focus();
+    }
+
+    Ok(())
+}
+
 /// Get Windows startup registry status.
 #[tauri::command]
 pub fn get_startup_status(app: AppHandle) -> Result<bool, String> {

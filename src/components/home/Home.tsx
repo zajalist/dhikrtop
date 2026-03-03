@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
+import { invoke } from "@tauri-apps/api/core";
 import {
     CheckCircle,
     Info,
@@ -600,23 +601,33 @@ export function Home() {
                         })}
                     </p>
                 </div>
-                <div className="relative">
-                    <Bell
-                        size={22}
+                <div className="relative flex items-center gap-3">
+                    <div className="relative">
+                        <Bell
+                            size={22}
+                            style={{ color: "rgba(215,194,159,0.5)" }}
+                        />
+                        {notifs.length > 0 && (
+                            <span
+                                className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-white"
+                                style={{
+                                    background: "#DCA048",
+                                    fontSize: "0.55rem",
+                                    fontWeight: 700,
+                                }}
+                            >
+                                {notifs.length}
+                            </span>
+                        )}
+                    </div>
+                    <button
+                        onClick={() => invoke("hide_adhkar").catch(() => {})}
+                        className="p-1 hover:bg-white/10 rounded transition"
                         style={{ color: "rgba(215,194,159,0.5)" }}
-                    />
-                    {notifs.length > 0 && (
-                        <span
-                            className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-white"
-                            style={{
-                                background: "#DCA048",
-                                fontSize: "0.55rem",
-                                fontWeight: 700,
-                            }}
-                        >
-                            {notifs.length}
-                        </span>
-                    )}
+                        title="Close"
+                    >
+                        <X size={20} />
+                    </button>
                 </div>
             </motion.div>
 

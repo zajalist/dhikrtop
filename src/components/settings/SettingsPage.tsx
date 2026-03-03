@@ -2,7 +2,8 @@ import { useMemo, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { User, CheckCircle, Settings2, Wand2 } from "lucide-react";
+import { invoke } from "@tauri-apps/api/core";
+import { User, CheckCircle, Settings2, Wand2, Trash2 } from "lucide-react";
 import { loadUserData, saveUserData } from "../../lib/userData";
 
 const FONT_SIZES = [
@@ -347,6 +348,41 @@ export function SettingsPage() {
                             </button>
                         ))}
                     </div>
+                </div>
+            </SettingsCard>
+
+            {/* Danger Zone */}
+            <SettingsCard icon={Trash2} title="Danger Zone">
+                <div className="space-y-3">
+                    <p style={{ color: "#D7C29F", fontSize: "0.82rem" }}>
+                        Reset all your data and start from scratch with the setup wizard.
+                    </p>
+                    <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={async () => {
+                            if (confirm("Are you sure? This will delete all your data and restart the setup wizard.")) {
+                                try {
+                                    // Clear localStorage
+                                    localStorage.clear();
+                                    // Call Tauri reset command
+                                    await invoke("reset_all_data");
+                                } catch (err) {
+                                    console.error("Failed to reset:", err);
+                                }
+                            }
+                        }}
+                        className="w-full py-2.5 rounded-xl text-white font-semibold"
+                        style={{
+                            background: "linear-gradient(135deg, #DC4848, #B93939)",
+                            fontSize: "0.82rem",
+                        }}
+                    >
+                        <div className="flex items-center justify-center gap-2">
+                            <Trash2 size={16} />
+                            Reset All Data
+                        </div>
+                    </motion.button>
                 </div>
             </SettingsCard>
 

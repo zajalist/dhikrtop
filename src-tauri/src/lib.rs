@@ -101,6 +101,7 @@ pub fn run() {
             commands::save_preferences,
             commands::is_first_install,
             commands::mark_setup_complete,
+            commands::reset_all_data,
             commands::get_startup_status,
             commands::set_startup,
             // Database commands
@@ -146,8 +147,11 @@ pub fn run() {
                 .unwrap_or(false);
 
             if is_first_install {
-                // Show setup window on first install
+                // Show setup window on first install at top-left corner
                 if let Some(setup_window) = app.get_webview_window("setup") {
+                    // Position at top-left corner
+                    let _ = setup_window.set_position(tauri::LogicalPosition { x: 0.0, y: 0.0 });
+                    let _ = setup_window.set_size(tauri::LogicalSize { width: 380, height: 900 });
                     let _ = setup_window.show();
                     let _ = setup_window.set_focus();
                 }
